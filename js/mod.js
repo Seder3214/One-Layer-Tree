@@ -13,14 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.08",
+	name: "One Layer Tree: Particle Mansion",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+	<h3>v0.08</h3><br>
+		<p>- Just a beta
+		                        <p><b><br>+Seder3214+</br></b></p>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 

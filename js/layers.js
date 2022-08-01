@@ -74,7 +74,7 @@ addLayer("p", {
 						else return player.p.points.pow(0.55)},
 				},
 				 13: {
-					title: "Appear a Particle Destruction",
+					title: "Power up Particles",
 					description() {return "Each Particle upgrade gains boost to particle gain <br> <br>Currently: " + format(upgradeEffect("p", 13)) + "x"},
 					cost: new Decimal(1300),
 					effect() { 	let ret = Decimal.pow(1.7, player[this.layer].upgrades.length)

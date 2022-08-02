@@ -1,7 +1,7 @@
 let modInfo = {
 	name: "One Layer Tree",
-	id: "mymod",
-	author: "nobody",
+	id: "tabs tree",
+	author: "Seder3214",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
 
@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.08",
-	name: "One Layer Tree: Particle Mansion",
+	num: "0.12",
+	name: "One Layer Tree: Dices!!!",
 }
 
 let changelog = `<h1>Changelog:</h1><br>

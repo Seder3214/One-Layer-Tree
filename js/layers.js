@@ -26,7 +26,7 @@ addLayer("p", {
 		if (hasUpgrade("p", 12)) mult = mult.mul(upgradeEffect("p", 12))
 		if (hasUpgrade("p", 13)) mult = mult.mul(upgradeEffect("p", 13))
 		if (hasUpgrade("p", 21)) mult = mult.mul(upgradeEffect("p", 21))
-					if (hasUpgrade("p", 22)) mult = mult.pow(upgradeEffect("p", 22))
+					if (hasUpgrade("p", 32)) mult = mult.pow(upgradeEffect("p", 32))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -40,8 +40,9 @@ addLayer("p", {
         "Particles": {
         content:[
             function() {if (player.tab == "p") return "main-display"},
-            function() { if (player.tab == "p")  return ["row", [["upgrade", 11], "blank", ["upgrade", 12], "blank", ["upgrade", 13], "blank", ["upgrade", 14]]] },
-            ]
+            function() { if (player.tab == "p")  return ["upgrades", [1,3]]
+ },
+ ]
         },
 		        "Voids": {
 								unlocked() {return (hasUpgrade("p", 14))},
@@ -55,7 +56,7 @@ addLayer("p", {
             ]
         ]
 				},
-            function() { if (hasUpgrade("p", 14)) return ["row", [["upgrade", 21], "blank", ["upgrade", 22], "blank", ["upgrade", 23]]]
+            function() { if (hasUpgrade("p", 14)) return ["upgrades", [2]]
         },
 		]
 				},
@@ -113,7 +114,7 @@ addLayer("p", {
 					title: "Empower II",
 					description() {return "Gives +15 to Void base gain"},
 					cost: new Decimal(300),
-					unlocked() {return (hasUpgrade("p", 24))},
+					unlocked() {return (hasUpgrade("p", 34))},
 															                currencyDisplayName: "Voids", // Use if using a nonstandard currency
                 currencyInternalName: "v", // Use if using a nonstandard currency
                 currencyLayer: "p",
@@ -122,7 +123,7 @@ addLayer("p", {
 					title: "Synthesis",
 					description() {return "Unlock a new tab"},
 					cost: new Decimal(750),
-					unlocked() {return (hasUpgrade("p", 24))},
+					unlocked() {return (hasUpgrade("p", 34))},
 															                currencyDisplayName: "Voids", // Use if using a nonstandard currency
                 currencyInternalName: "v", // Use if using a nonstandard currency
                 currencyLayer: "p",
@@ -135,13 +136,13 @@ addLayer("p", {
 				},
 																 32: {
 					title: "Exponential",
-					description() {return "Each upgrade exponents Particles gain. <br> <br>Currently: ^" + format(upgradeEffect("p", 22))},
+					description() {return "Each upgrade exponents Particles gain. <br> <br>Currently: ^" + format(upgradeEffect("p", 32))},
 					cost: new Decimal(140),
 					unlocked() {return (hasUpgrade("p", 21))},
 				                currencyDisplayName: "Voids", // Use if using a nonstandard currency
                 currencyInternalName: "v", // Use if using a nonstandard currency
                 currencyLayer: "p",
-									effect() { 	let ret = Decimal.pow(0.55, player.p.upgrades.length)
+								effect() { 	let ret = Decimal.pow(1.05, player[this.layer].upgrades.length)
 		          		return ret},
 			},
 															 33: {

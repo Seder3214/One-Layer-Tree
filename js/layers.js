@@ -6,10 +6,11 @@ addLayer("p", {
         unlocked: true,
 		points: new Decimal(0),
 		sc: new Decimal(20),
+		v: new Decimal(0),
     }},
     color: "#4BDC13",
 				nodeStyle() {
-		if (player.v.points.gte(1)) return {
+		if (player.p.v.gte(1)) return {
 			'background': 'rgb(139, 0, 240)',
 		}
 	},
@@ -24,7 +25,7 @@ addLayer("p", {
 		if (hasUpgrade("p", 11)) mult = mult.add(2)
 		if (hasUpgrade("p", 12)) mult = mult.mul(upgradeEffect("p", 12))
 		if (hasUpgrade("p", 13)) mult = mult.mul(upgradeEffect("p", 13))
-		if (hasUpgrade("v", 11)) mult = mult.mul(upgradeEffect("v", 11))
+		if (hasUpgrade("p", 21)) mult = mult.mul(upgradeEffect("p", 21))
 					if (hasUpgrade("p", 22)) mult = mult.pow(upgradeEffect("p", 22))
         return mult
     },
@@ -39,27 +40,28 @@ addLayer("p", {
         "Particles": {
         content:[
             function() {if (player.tab == "p") return "main-display"},
-            function() { if (player.tab == "p")  return "resource-display"},
-			'blank',
-			'upgrades'
-			
+            function() { if (player.tab == "p")  return ["row", [["upgrade", 11], "blank", ["upgrade", 12], "blank", ["upgrade", 13], "blank", ["upgrade", 14]]] },
             ]
         },
 		        "Voids": {
-					embedLayer: 'v',
 								unlocked() {return (hasUpgrade("p", 14))},
 					            buttonStyle: { "border-color": "rgb(139, 0, 240)" },
         content:[
-		                    function() {if (player.tab == "p") return "main-display"
-				},
-            function() { if (player.v.unlocked) return "resource-display"},
-			"blank",
-			'upgrades'
+		                    function() {if (player.tab == "p") return [ "column", 
+            [
+                ["display-text", 
+                   "You have <h2 style='color: #8b00f0; text-shadow: 0 0 10px #8b00f0'>" + format(player.p.v) + "</h2> Void"
+                ],
             ]
+        ]
+				},
+            function() { if (hasUpgrade("p", 14)) return ["row", [["upgrade", 21], "blank", ["upgrade", 22], "blank", ["upgrade", 23]]]
         },
+		]
+				},
 				        "Dices": {
 					embedLayer: 'd',
-								unlocked() {return (hasUpgrade("v", 13))},
+								unlocked() {return (hasUpgrade("p", 23))},
 					            buttonStyle: { "border-color": "white" },
         content:[
 		                    function() {if (player.tab == "p") return "main-display"
@@ -87,7 +89,7 @@ addLayer("p", {
 				},
 				 13: {
 					title: "Power up Particles",
-					description() {return "Each Particle upgrade gains boost to particle gain <br> <br>Currently: " + format(upgradeEffect("p", 13)) + "x"},
+					description() {return "Each upgrade gains boost to particle gain <br> <br>Currently: " + format(upgradeEffect("p", 13)) + "x"},
 					cost: new Decimal(1300),
 					effect() { 	let ret = Decimal.pow(1.7, player[this.layer].upgrades.length)
 		          		return ret},
@@ -97,104 +99,71 @@ addLayer("p", {
 					description() {return "Create 0.5 Void/sec"},
 					cost: new Decimal(7000),
 				},
-												 21: {
+								21: {
+					title: "Empower",
+					description() {return "Unspent Void boosts Particles gain, and unlock a new row of Particle Upgrades <br> <br>Currently: " + format(upgradeEffect("p", 21)) + "x"},
+					cost: new Decimal(20),
+					effect() { if (upgradeEffect("p", 21).gte(100)) return player.p.sc
+					else return player.p.v.pow(0.4) },
+										                currencyDisplayName: "Voids", // Use if using a nonstandard currency
+                currencyInternalName: "v", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+								22: {
+					title: "Empower II",
+					description() {return "Gives +15 to Void base gain"},
+					cost: new Decimal(300),
+					unlocked() {return (hasUpgrade("p", 24))},
+															                currencyDisplayName: "Voids", // Use if using a nonstandard currency
+                currencyInternalName: "v", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+												23: {
+					title: "Synthesis",
+					description() {return "Unlock a new tab"},
+					cost: new Decimal(750),
+					unlocked() {return (hasUpgrade("p", 24))},
+															                currencyDisplayName: "Voids", // Use if using a nonstandard currency
+                currencyInternalName: "v", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+												 31: {
 					title: "Tier UP",
 					description() {return "x5.00 to Void gain"},
 					cost: new Decimal(56000),
-					unlocked() {return (hasUpgrade("v", 11))},
+					unlocked() {return (hasUpgrade("p", 21))},
 				},
-																 22: {
+																 32: {
 					title: "Exponential",
-					description() {return "Each Void upgrade exponents Particles gain. <br> <br>Currently: ^" + format(upgradeEffect("p", 22))},
+					description() {return "Each upgrade exponents Particles gain. <br> <br>Currently: ^" + format(upgradeEffect("p", 22))},
 					cost: new Decimal(140),
-					unlocked() {return (hasUpgrade("v", 11))},
+					unlocked() {return (hasUpgrade("p", 21))},
 				                currencyDisplayName: "Voids", // Use if using a nonstandard currency
-                currencyInternalName: "points", // Use if using a nonstandard currency
-                currencyLayer: "v",
-									effect() { 	let ret = Decimal.pow(1.15, player.v.upgrades.length)
+                currencyInternalName: "v", // Use if using a nonstandard currency
+                currencyLayer: "p",
+									effect() { 	let ret = Decimal.pow(0.55, player.p.upgrades.length)
 		          		return ret},
 			},
-															 23: {
+															 33: {
 					title: "Hardcap goes 200",
 					description() {return "Remove the first hardcap of <b>Boost I</b> upgrade"},
 					cost: new Decimal(620000),
-					unlocked() {return (hasUpgrade("v", 11))},
+					unlocked() {return (hasUpgrade("p", 21))},
 				},
-																			 24: {
+																			 34: {
 					title: "New upgrades here!",
 					description() {return "Unlock 2 Void upgrades "},
 					cost: new Decimal(45000000),
-					unlocked() {return (hasUpgrade("v", 11))},
+					unlocked() {return (hasUpgrade("p", 21))},
 				},
 			},
 									passiveGeneration() {			
 return (player.points.gte(1)?1:0)
   },
   update(diff) {
-	  if (hasChallenge("p", 14)) return player.p.v = player.p.v.add(diff)
+	  if (hasUpgrade("p", 14)) return player.p.v = player.p.v.add(diff)
   },
     layerShown(){return true}
-})
-
-addLayer("v", {
-    name: "Voids", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "V", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-    startData() { return {
-        unlocked: true,
-		points: new Decimal(0),
-				sc: new Decimal(100),
-    }},
-    color: "rgb(139, 0, 240)",
-    requires: new Decimal(10), // Can be a function that takes requirement increases into account
-    resource: "Voids", // Name of prestige currency
-    baseResource: "points", // Name of resource prestige is based on
-    baseAmount() {return player.points},
-canReset() { return (!player.v.unlocked) },	// Get the current amount of baseResource
-    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.001, // Prestige currency exponent
-    gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal(1)
-				if (hasUpgrade("p", 21)) mult = mult.times(5)
-				if (hasUpgrade("v", 12)) mult = mult.add(15)
-        return mult
-    },
-	        prestigeButtonText(){
-                let start =  "You cant reset using that button <br>(Only passiveGain)"
-				return start;
-        },
-    gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
-    },
-    row: 1, // Row the layer is in on the tree (0 is the first row)
-    hotkeys: [
-        {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
-    ],
-			upgrades: {
-				11: {
-					title: "Empower",
-					description() {return "Unspent Void boosts Particles gain, and unlock a new row of Particle Upgrades <br> <br>Currently: " + format(upgradeEffect("v", 11)) + "x"},
-					cost: new Decimal(20),
-					effect() { if (upgradeEffect("v", 11).gte(100)) return player.v.sc
-						else return player.v.points.pow(0.4)},
-				},
-								12: {
-					title: "Empower II",
-					description() {return "Gives +15 to Void base gain"},
-					cost: new Decimal(300),
-					unlocked() {return (hasUpgrade("p", 24))},
-				},
-												13: {
-					title: "Synthesis",
-					description() {return "Unlock a new tab"},
-					cost: new Decimal(750),
-					unlocked() {return (hasUpgrade("p", 24))},
-				},
-			},
-									passiveGeneration() {			
-return (hasUpgrade("p", 14)?0.5:0)
-  },
-    layerShown(){if (hasUpgrade("p", 14)) return "ghost"}
 })
 addLayer("d", {
     name: "Dices", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -246,14 +215,5 @@ onClick() {
  update(diff) {
   if (player.d.at > 0) player.d.at = Math.max(0,player.d.at - diff)
 },
-			upgrades: {
-				11: {
-					title: "Empower",
-					description() {return "Unspent Void boosts Particles gain, and unlock a new row of Particle Upgrades <br> <br>Currently: " + format(upgradeEffect("v", 11)) + "x"},
-					cost: new Decimal(20),
-					effect() { if (upgradeEffect("v", 11).gte(100)) return player.v.sc
-						else return player.v.points.pow(0.4)},
-				},
-			},
-    layerShown(){if (hasChallenge("v", 12)) return "ghost"}
+    layerShown(){if (hasUpgrade("p", 22)) return "ghost"}
 })

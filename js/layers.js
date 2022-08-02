@@ -139,7 +139,7 @@ return (player.points.gte(1)?1:0)
 addLayer("v", {
     name: "Voids", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "V", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
 		points: new Decimal(0),
@@ -166,7 +166,7 @@ canReset() { return (!player.v.unlocked) },	// Get the current amount of baseRes
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
     },
-    row: 0, // Row the layer is in on the tree (0 is the first row)
+    row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
@@ -182,11 +182,13 @@ canReset() { return (!player.v.unlocked) },	// Get the current amount of baseRes
 					title: "Empower II",
 					description() {return "Gives +15 to Void base gain"},
 					cost: new Decimal(300),
+					unlocked() {return (hasUpgrade("p", 24))},
 				},
 												13: {
 					title: "Synthesis",
 					description() {return "Unlock a new tab"},
 					cost: new Decimal(750),
+					unlocked() {return (hasUpgrade("p", 24))},
 				},
 			},
 									passiveGeneration() {			
@@ -197,7 +199,7 @@ return (hasUpgrade("p", 14)?0.5:0)
 addLayer("d", {
     name: "Dices", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "D", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
 		points: new Decimal(0),
@@ -224,7 +226,7 @@ effectDescription() {return "Timeout: " + format(player.d.at)},	// Get the curre
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
     },
-    row: 0, // Row the layer is in on the tree (0 is the first row)
+    row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],

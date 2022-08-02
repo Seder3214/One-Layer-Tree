@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.14",
+	num: "0.15",
 	name: "One Layer Tree: Dices!!!",
 }
 

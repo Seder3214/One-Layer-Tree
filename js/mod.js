@@ -13,12 +13,12 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.16",
+	num: "0.18",
 	name: "One Layer Tree: Effect Fix",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.16</h3><br>
+	<h3>v0.18</h3><br>
 		<p>- Fixed Void upgrades effects
 		                        <p><b><br>+Seder3214+</br></b></p>`
 
@@ -52,6 +52,7 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
+"Current Endgame: 3rd row of Particle upgrades"
 ]
 
 // Determines when the game "ends"

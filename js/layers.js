@@ -7,6 +7,8 @@ addLayer("p", {
 		points: new Decimal(0),
 		sc: new Decimal(20),
 		v: new Decimal(0),
+		at: 1,
+		d: new Decimal(0),
     }},
     color: "#4BDC13",
 				nodeStyle() {
@@ -27,6 +29,7 @@ addLayer("p", {
 		if (hasUpgrade("p", 13)) mult = mult.mul(upgradeEffect("p", 13))
 		if (hasUpgrade("p", 21)) mult = mult.mul(upgradeEffect("p", 21))
 					if (hasUpgrade("p", 32)) mult = mult.pow(upgradeEffect("p", 32))
+			if (hasUpgrade("p", 42)) mult = mult.times(upgradeEffect("p", 42))		
         return mult
     },
 	    effect() {
@@ -36,7 +39,7 @@ addLayer("p", {
 		        if (hasUpgrade("p", 31))
             eff = eff.times(2.5);
         if (hasUpgrade("p", 22))
-            eff = eff.add(7.5);
+            eff = eff.add(15);
         return eff;
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -50,7 +53,7 @@ addLayer("p", {
         "Particles": {
         content:[
             function() {if (player.tab == "p") return "main-display"},
-            function() { if (player.tab == "p")  return ["upgrades", [1,3]]
+            function() { if (player.tab == "p")  return ["upgrades", [1,3,4]]
  },
  ]
         },
@@ -70,18 +73,22 @@ addLayer("p", {
         },
 		]
 				},
-				        "Dices": {
-					embedLayer: 'd',
+		        "Dices": {
 								unlocked() {return (hasUpgrade("p", 23))},
 					            buttonStyle: { "border-color": "white" },
         content:[
-		                    function() {if (player.tab == "p") return "main-display"
-				},
-            function() { if (player.p.unlocked) return "resource-display"},
-			"blank",
-			'upgrades'
+		                    function() {if (player.tab == "p") return [ "column", 
+            [
+                ["display-text", 
+                   "You have <h2 style='color: white; text-shadow: 0 0 10px white'>" + format(player.p.d) + "</h2> Dice Points." + "<br> Timeout: " + format(player.p.at) + "s"
+                ],
             ]
+        ]
+				},
+            function() { if (hasUpgrade("p", 23)) return 'clickables'
         },
+		]
+				},
 			},
 			upgrades: {
 				11: {
@@ -93,8 +100,8 @@ addLayer("p", {
 					title: "Boost I",
 					description() {return "Particles boost themselves gain <br> <br>Currently: " + format(upgradeEffect("p", 12)) + "x"},
 					cost: new Decimal(90),
-					effect() { 	if (hasUpgrade("p", 23) && upgradeEffect("p", 12).gte(200)) return player.p.sc.times(10)
-					if (hasUpgrade("p", 23)) return player.p.points.pow(0.55)
+					effect() { 	if (hasUpgrade("p", 33) && upgradeEffect("p", 12).gte(200)) return player.p.sc.times(10)
+					if (hasUpgrade("p", 33)) return player.p.points.pow(0.55)
 					if (upgradeEffect("p", 12).gte(20)) return player.p.sc
 						else return player.p.points.pow(0.55)},
 				},
@@ -119,6 +126,17 @@ addLayer("p", {
 										                currencyDisplayName: "Voids", // Use if using a nonstandard currency
                 currencyInternalName: "v", // Use if using a nonstandard currency
                 currencyLayer: "p",
+								style() {
+									if (hasUpgrade("p", 21)) return {
+										'background-color': '#77bf5f'
+									}
+											if (player.p.v.gte(20)) return {
+										'background-color': '#8b00f0'
+									}
+					else return {
+						'background-color': '#bf8f8f'
+					}
+				},
 				},
 								22: {
 					title: "Empower II",
@@ -128,6 +146,17 @@ addLayer("p", {
 															                currencyDisplayName: "Voids", // Use if using a nonstandard currency
                 currencyInternalName: "v", // Use if using a nonstandard currency
                 currencyLayer: "p",
+								style() {
+									if (hasUpgrade("p", 22)) return {
+										'background-color': '#77bf5f'
+									}
+																		if (player.p.v.gte(300)) return {
+										'background-color': '#8b00f0'
+									}
+					else return {
+						'background-color': '#bf8f8f'
+					}
+				},
 				},
 												23: {
 					title: "Synthesis",
@@ -137,6 +166,17 @@ addLayer("p", {
 															                currencyDisplayName: "Voids", // Use if using a nonstandard currency
                 currencyInternalName: "v", // Use if using a nonstandard currency
                 currencyLayer: "p",
+								style() {
+									if (hasUpgrade("p", 23)) return {
+										'background-color': '#77bf5f'
+									}
+										if (player.p.v.gte(750)) return {
+										'background-color': '#8b00f0'
+									}
+					else return {
+						'background-color': '#bf8f8f'
+					}
+				},
 				},
 												 31: {
 					title: "Tier UP",
@@ -152,13 +192,13 @@ addLayer("p", {
 				                currencyDisplayName: "Voids", // Use if using a nonstandard currency
                 currencyInternalName: "v", // Use if using a nonstandard currency
                 currencyLayer: "p",
-								effect() { 	let ret = Decimal.pow(1.05, player[this.layer].upgrades.length)
+								effect() { 	let ret = Decimal.pow(1.01, player[this.layer].upgrades.length)
 		          		return ret},
 			},
 															 33: {
 					title: "Hardcap goes 200",
 					description() {return "Remove the first hardcap of <b>Boost I</b> upgrade"},
-					cost: new Decimal(8000000),
+					cost: new Decimal(1200000),
 					unlocked() {return (hasUpgrade("p", 21))},
 				},
 																			 34: {
@@ -167,65 +207,59 @@ addLayer("p", {
 					cost: new Decimal(45000000),
 					unlocked() {return (hasUpgrade("p", 21))},
 				},
+					 41: {
+					title: "Add 2nd Dice",
+					description() {return "The <b>Random</b> now works twice if you click"},
+					cost: new Decimal(95),
+									                currencyDisplayName: "Dices Points", // Use if using a nonstandard currency
+                currencyInternalName: "d", // Use if using a nonstandard currency
+                currencyLayer: "p",
+					unlocked() {return (player.p.d.gte(1))},
+				},
+									 42: {
+					title: "Dices Boost I",
+					description() {return "Unspent Dices Points boosts particles gain <br> <br>Currently: " + format(upgradeEffect("p", 42)) + "x"},
+					cost: new Decimal(180),
+					unlocked() {return (player.p.d.gte(1))},
+				 currencyDisplayName: "Dices Points", // Use if using a nonstandard currency
+                currencyInternalName: "d", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				effect() {
+					return player.p.d.pow(0.32)
+				},
+				},
 			},
+				clickables: {
+    11: {
+		title: "Random",
+        display() {
+			if (hasUpgrade("p", 41)) return "Roll 2 Dices. Adds you 1 to 10 Dices Points"
+			else return "Roll a Dice. Adds you 1 to 5 Dices Points"},
+		canClick() { return (player.p.at == 0)},
+onClick() {
+	 player.p.at = 5
+  let roll = Math.random() * (5 - 1) + (1);  // replacing min and max with their proper variable locations
+  if (hasUpgrade("p", 41)) return player.p.d = player.p.d.add(roll).add(roll).ceil()
+  else return player.p.d = player.p.d.add(roll).ceil()
+},
+								style() {
+											if (player.p.at > 0) return {
+						'background-color': '#bf8f8f'
+					}
+					if (player.p.at == 0) return {
+						'background-color': 'white'
+					}
+				}
+		},
+    },
 									passiveGeneration() {			
 return (player.points.gte(1)?1:0)
   },
     update(diff) {
-        if (hasUpgrade("p", 14))
+			    if (player.p.at > 0) player.p.at = Math.max(0,player.p.at - diff)	
+       
+   if (hasUpgrade("p", 14))
           return player.p.v = player.p.v.add(tmp.p.effect.times(diff));
-    },
+	},
     layerShown(){return true}
-})
-addLayer("d", {
-    name: "Dices", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "D", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-    startData() { return {
-        unlocked: true,
-		points: new Decimal(0),
-				sc: new Decimal(100),
-				at: 1,
-    }},
-    color: "white",
-    requires: new Decimal(10), // Can be a function that takes requirement increases into account
-    resource: "Dices", // Name of prestige currency
-    baseResource: "points", // Name of resource prestige is based on
-    baseAmount() {return player.points},
-canReset() { return (!player.d.unlocked) },
-effectDescription() {return "Timeout: " + format(player.d.at)},	// Get the current amount of baseResource
-    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.001, // Prestige currency exponent
-    gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal(1)
-        return mult
-    },
-	        prestigeButtonText(){
-                let start =  "You cant reset using that button <br>(Only Clickable Gain)"
-				return start;
-        },
-    gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
-    },
-    row: 1, // Row the layer is in on the tree (0 is the first row)
-    hotkeys: [
-        {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
-    ],
-	clickables: {
-    11: {
-		title: "Random",
-        display() {
-			return "Roll a Dice. Adds you 1 to 5 Dices"},
-		canClick() { return (player.d.at == 0)},
-onClick() {
-	 player.d.at = 5
-  let roll = Math.random() * (5 - 1) + (1);  // replacing min and max with their proper variable locations
-  addPoints("d",roll)
-},
-		},
-    },
- update(diff) {
-  if (player.d.at > 0) player.d.at = Math.max(0,player.d.at - diff)
-},
-    layerShown(){if (hasUpgrade("p", 22)) return "ghost"}
 })

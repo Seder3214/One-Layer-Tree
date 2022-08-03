@@ -16,7 +16,7 @@ addLayer("p", {
 	},
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "Particles", // Name of prestige currency
-    baseResource: "points", // Name of resource prestige is based on
+    baseResource: "points",	// Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.001, // Prestige currency exponent
@@ -28,6 +28,16 @@ addLayer("p", {
 		if (hasUpgrade("p", 21)) mult = mult.mul(upgradeEffect("p", 21))
 					if (hasUpgrade("p", 32)) mult = mult.pow(upgradeEffect("p", 32))
         return mult
+    },
+	    effect() {
+        if (!hasUpgrade("p", 14))
+            return new Decimal(0.5);
+        let eff = Decimal.pow(1);
+		        if (hasUpgrade("p", 31))
+            eff = eff.times(2.5);
+        if (hasUpgrade("p", 22))
+            eff = eff.add(7.5);
+        return eff;
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
@@ -51,7 +61,7 @@ addLayer("p", {
 		                    function() {if (player.tab == "p") return [ "column", 
             [
                 ["display-text", 
-                   "You have <h2 style='color: #8b00f0; text-shadow: 0 0 10px #8b00f0'>" + format(player.p.v) + "</h2> Void"
+                   "You have <h2 style='color: #8b00f0; text-shadow: 0 0 10px #8b00f0'>" + format(player.p.v) + "</h2> Void. <br>" + "You are generating " + format(tmp.p.effect) + " Voids/s"
                 ],
             ]
         ]
@@ -148,7 +158,7 @@ addLayer("p", {
 															 33: {
 					title: "Hardcap goes 200",
 					description() {return "Remove the first hardcap of <b>Boost I</b> upgrade"},
-					cost: new Decimal(620000),
+					cost: new Decimal(8000000),
 					unlocked() {return (hasUpgrade("p", 21))},
 				},
 																			 34: {
@@ -161,9 +171,10 @@ addLayer("p", {
 									passiveGeneration() {			
 return (player.points.gte(1)?1:0)
   },
-  update(diff) {
-	  if (hasUpgrade("p", 14)) return player.p.v = player.p.v.add(diff)
-  },
+    update(diff) {
+        if (hasUpgrade("p", 14))
+          return player.p.v = player.p.v.add(tmp.p.effect.times(diff));
+    },
     layerShown(){return true}
 })
 addLayer("d", {

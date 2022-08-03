@@ -13,13 +13,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.15",
-	name: "One Layer Tree: Dices!!!",
+	num: "0.16",
+	name: "One Layer Tree: Effect Fix",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.08</h3><br>
-		<p>- Just a beta
+	<h3>v0.16</h3><br>
+		<p>- Fixed Void upgrades effects
 		                        <p><b><br>+Seder3214+</br></b></p>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`

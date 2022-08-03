@@ -210,7 +210,7 @@ addLayer("p", {
 					 41: {
 					title: "Add 2nd Dice",
 					description() {return "The <b>Random</b> now works twice if you click"},
-					cost: new Decimal(95),
+					cost: new Decimal(65),
 									                currencyDisplayName: "Dices Points", // Use if using a nonstandard currency
                 currencyInternalName: "d", // Use if using a nonstandard currency
                 currencyLayer: "p",
@@ -219,7 +219,7 @@ addLayer("p", {
 									 42: {
 					title: "Dices Boost I",
 					description() {return "Unspent Dices Points boosts particles gain <br> <br>Currently: " + format(upgradeEffect("p", 42)) + "x"},
-					cost: new Decimal(180),
+					cost: new Decimal(130),
 					unlocked() {return (player.p.d.gte(1))},
 				 currencyDisplayName: "Dices Points", // Use if using a nonstandard currency
                 currencyInternalName: "d", // Use if using a nonstandard currency

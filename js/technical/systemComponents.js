@@ -105,18 +105,17 @@ var systemComponents = {
 	'overlay-head': {
 		template: `			
 		<div class="overlayThing" style="padding-bottom:7px; width: 90%; z-index: 1000; position: relative">
-		<span v-if="player.devSpeed && player.devSpeed != 1" class="overlayThing">
-			<br>Dev Speed: {{format(player.devSpeed)}}x<br>
+		<span v-if="player.devSpeed && player.devSpeed >= 1" class="overlayThing">
+			<br>Dev Speed: {{format(getPointGen())}}x<br>
 		</span>
 		<span v-if="player.offTime !== undefined"  class="overlayThing">
 			<br>Offline Time: {{formatTime(player.offTime.remain)}}<br>
 		</span>
 		<br>
-		<span v-if="player.points.lt('1e1000')"  class="overlayThing">You have </span>
-		<h2  class="overlayThing" id="points">{{format(player.points)}}</h2>
-		<span v-if="player.points.lt('1e1e6')"  class="overlayThing"> {{modInfo.pointsName}}</span>
+		<span v-if="player.points.lt('1e1000')"  class="overlayThing">You spent </span>
+		<h2  class="overlayThing" id="points">{{formatTime(player.points)}}</h2>
+		<span v-if="player.points.lt('1e1e6')"  class="overlayThing"> while playing this tree</span>
 		<br>
-		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/sec)</span>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
 	</div>
 	`
@@ -137,14 +136,32 @@ var systemComponents = {
         <br>
         The Prestige Tree made by Jacorb and Aarex
 		<br><br>
-		<div class="link" onclick="showTab('changelog-tab')">Changelog</div><br>
-        <span v-if="modInfo.discordLink"><a class="link" v-bind:href="modInfo.discordLink" target="_blank">{{modInfo.discordName}}</a><br></span>
-        <a class="link" href="https://discord.gg/F3xveHV" target="_blank" v-bind:style="modInfo.discordLink ? {'font-size': '16px'} : {}">The Modding Tree Discord</a><br>
-        <a class="link" href="http://discord.gg/wwQfgPa" target="_blank" v-bind:style="{'font-size': '16px'}">Main Prestige Tree server</a><br>
+		<div class="discordInvite"> <div class="v-center" style="width:100%">
 		<br><br>
-        Time Played: {{ formatTime(player.timePlayed) }}<br><br>
-        <h3>Hotkeys</h3><br>
-        <span v-for="key in hotkeys" v-if="player[key.layer].unlocked && tmp[key.layer].hotkeys[key.id].unlocked"><br>{{key.description}}</span></div>
+			<a class=link onclick="showTab('changelog-tab')" style="font-size:16px;display:inline;font-weight:400">
+			The Changelog</a><br/>Pretty much the history of the game 
+		</div></div>
+		<div class="discordInvite"> <div class="v-center" style="width:100%">
+		<br><br>
+			<a class="link" href="http://discord.gg/F3xveHV" style="font-size:16px;display:inline;font-weight:400">
+			The Modding Tree Discord</a><br/>Just a TMT server link 0_0
+		</div></div>
+		<br><br>
+		<div class="discordInvite"> <div class="v-center" style="width:100%">
+		<br><br>
+			<div class="link" style="font-size:16px;display:inline;font-weight:400"> You played this tree for:</div><br/> {{ formatTime(player.timePlayed)}}
+		</div></div>
+		<br><br>
+				<div class="RewardBox"> <div class="v-center" style="width:100%">
+				<br><br>
+							<a class=link onclick="showTab('changelog-tab')" style="font-size:16px;display:inline;font-weight:400">
+			Playtime Rewards:</a><br/><br>Almoxt forgot lul <br><br>
+5 Minutes of playing: +30% to Particle gain<br><br>
+20 Minutes of playing: +40% to all currencies gain<br><br>
+1 Hour of playing: +120% to devSpeed (2.20x)<br><br>
+2 Hours of playing: +100% to All upgrades effects<br><br>	
+4 Hours of playing: +250% to Particle Gain<br><br>		
+		<br><br>
     `
     },
 

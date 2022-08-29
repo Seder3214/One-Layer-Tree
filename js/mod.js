@@ -2,7 +2,7 @@ let modInfo = {
 	name: "One Layer Tree",
 	id: "tabs tree",
 	author: "Seder3214",
-	pointsName: "points",
+	pointsName: "",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
@@ -13,14 +13,11 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.18",
-	name: "One Layer Tree: Effect Fix",
+	num: "0.25",
+	name: "One Layer Tree: Time Tab!",
 }
 
-let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.18</h3><br>
-		<p>- Fixed Void upgrades effects
-		                        <p><b><br>+Seder3214+</br></b></p>`
+let changelog = `<h1>Changelog:</h1><br> NO`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -41,8 +38,13 @@ function canGenPoints(){
 function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
-
+let dev = new Decimal(1)
+if (player.p.buyables[11].gte(1)) dev = dev.times(buyableEffect("p", 11))
+if (hasUpgrade("p", 53)) dev = dev.pow(upgradeEffect("p", 53))
+	if (hasMilestone("p", 1)) dev = dev.times(2.2)
+return dev	
 	let gain = new Decimal(1)
+		if (player.p.buyables[11].gte(1)) gain = gain.times(dev)	
 	return gain
 }
 
@@ -52,12 +54,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-"Current Endgame: 3rd row of Particle upgrades"
+"Current Endgame: 2 Time Ascensions"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return (hasUpgrade("p", 42))
+	return (player.p.buyables[11].gte(2))
 }
 
 

@@ -245,7 +245,7 @@ function loadVue() {
 		props: ['layer'],
 		template: `
 		<div style="margin-top: -13px">
-			<span v-if="tmp[layer].baseAmount"><br>You have {{formatWhole(tmp[layer].baseAmount)}} {{tmp[layer].baseResource}}</span>
+			<span v-if="tmp[layer].baseAmount"><br>You spent {{formatWhole(tmp[layer].baseAmount)}} {{tmp[layer].baseResource}}</span>
 			<span v-if="tmp[layer].passiveGeneration"><br>You are gaining {{format(tmp[layer].resetGain.times(tmp[layer].passiveGeneration))}} {{tmp[layer].resource}} per second</span>
 			<br><br>
 			<span v-if="tmp[layer].showBest">Your best {{tmp[layer].resource}} is {{formatWhole(player[layer].best)}}<br></span>
@@ -602,8 +602,8 @@ function loadVue() {
 	Vue.component('node-mark', systemComponents['node-mark'])
 	Vue.component('tab-buttons', systemComponents['tab-buttons'])
 	Vue.component('tree-node', systemComponents['tree-node'])
-	Vue.component('layer-tab', systemComponents['layer-tab'])
 	Vue.component('overlay-head', systemComponents['overlay-head'])
+	Vue.component('layer-tab', systemComponents['layer-tab'])
 	Vue.component('info-tab', systemComponents['info-tab'])
 	Vue.component('options-tab', systemComponents['options-tab'])
 	Vue.component('tooltip', systemComponents['tooltip'])

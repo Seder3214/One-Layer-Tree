@@ -19,6 +19,10 @@ h1, h2, h3, b, input {
 	background-color: #bf8f8f;
 	cursor: not-allowed;
 }
+#points {
+    color: var(--points);
+    text-shadow: 0 0 10px var(--points);
+}
 
 /* Can meens can be clicked/bought/etc */
 .can {
@@ -35,7 +39,3 @@ h1, h2, h3, b, input {
 	cursor: default;
 }
 
-#points {
-	color: var(--points);
-	text-shadow: 0 0 10px var(--points);
-}

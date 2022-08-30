@@ -105,7 +105,7 @@ var systemComponents = {
 	'overlay-head': {
 		template: `			
 		<div class="overlayThing" style="padding-bottom:7px; width: 90%; z-index: 1000; position: relative">
-		<span v-if="player.devSpeed && player.devSpeed >= 1" class="overlayThing">
+		<span v-if="player.points.gte(1)" class="overlayThing">
 			<br>Dev Speed: {{format(getPointGen())}}x<br>
 		</span>
 		<span v-if="player.offTime !== undefined"  class="overlayThing">

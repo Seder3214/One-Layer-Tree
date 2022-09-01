@@ -113,7 +113,7 @@ var systemComponents = {
 		</span>
 		<br>
 		<span v-if="player.points.lt('1e1000')"  class="overlayThing">You spent </span>
-		<h2  class="overlayThing" id="points">{{formatTime(player.points)}}</h2>
+		<h2  class="overlayThing" id="points">{{formatTime(player.points.sub(10))}}</h2>
 		<span v-if="player.points.lt('1e1e6')"  class="overlayThing"> while playing this tree</span>
 		<br>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>

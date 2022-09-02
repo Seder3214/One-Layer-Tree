@@ -887,7 +887,7 @@ return ret},
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
             player[this.layer].mp = player[this.layer].mp.sub(this.cost())
-            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(10))
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1).add(player.p.buyables[31]).max(1))
         },
 														style() {
 															                let data = tmp[this.layer].buyables[this.id]
@@ -898,8 +898,8 @@ return ret},
 						'background-color': 'lightblue'
 					}
 			},
-		effect(x) {if (player.p.buyables[22].gte(1)) return x = x.times(1.2).max(1).times(buyableEffect("p", 22))
-			else return x = x.times(1.2).max(1)},
+		effect(x) {if (player.p.buyables[22].gte(1)) return x = x.times(1.6).max(1).times(buyableEffect("p", 22))
+			else return x = x.times(1.6).max(1)},
     },
 					    22: {
         cost(x) { return new Decimal(300).times(x.pow(1.6).max(1.5)).max(300) },
@@ -911,7 +911,7 @@ return ret},
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
             player[this.layer].mp = player[this.layer].mp.sub(this.cost())
-            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(10))
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1).add(player.p.buyables[31]).max(1))
         },
 														style() {
 															                let data = tmp[this.layer].buyables[this.id]
@@ -922,8 +922,8 @@ return ret},
 						'background-color': 'lightblue'
 					}
 			},
-		effect(x) {if (player.p.buyables[33].gte(1)) return x = x.pow(1.6).max(1).times(buyableEffect("p", 23)).times(buyableEffect("p", 33))
-			else if (player.p.buyables[23].gte(1)) return x = x.pow(1.6).max(1).times(buyableEffect("p", 23))
+		effect(x) {if (player.p.buyables[33].gte(1)) return x = x.pow(1.8).max(1).times(buyableEffect("p", 23)).times(buyableEffect("p", 33))
+			else if (player.p.buyables[23].gte(1)) return x = x.pow(1.8).max(1).times(buyableEffect("p", 23))
 			else return x = x.add(0.1).pow(1.6).max(1)},
     },
 						    23: {
@@ -936,7 +936,7 @@ return ret},
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
             player[this.layer].mp = player[this.layer].mp.sub(this.cost())
-            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1).add(player.p.buyables[31]).max(1))
         },
 														style() {
 															                let data = tmp[this.layer].buyables[this.id]
@@ -955,7 +955,7 @@ return ret},
 		purchaseLimit: 10,
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Mega Scaler</b></h2> <br>" + "Requirement: " + format(data.cost) + " Mega Points <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + "/10 <br> Effect: x" + format(data.effect) + " to Mega Tierer"},
+				return "<h2><b>Mega Scaler</b></h2> <br>" + "Requirement: " + format(data.cost) + " Mega Points <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + "/10 <br> Effect: x" + format(data.effect) + " to Mega Tierer and scale up buying of 1st row of buyables up to 1 per click per level"},
         canAfford() { return player[this.layer].mp.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost

@@ -162,7 +162,7 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
 		]
 				},
 										        "Mega": {
-								unlocked() {return (hasUpgrade("p", 11))},
+								unlocked() {return (hasUpgrade("p", 91))},
 					            buttonStyle: { "border-color": "lightblue" },
         content:[
 		                    function() {if (player.tab == "p") return [ "column", 

@@ -11,13 +11,17 @@ addLayer("p", {
 		at: 1,
 		sl: 10,
 		gb: 30,
-		dmg: new Decimal(0),
 		ph: 15,
 		att: new Decimal(0),
 		d: new Decimal(0),
 		mt: new Decimal(1),
 		mp: new Decimal(2),
 		br: new Decimal(1),
+		pwr: new Decimal(0),
+		req: new Decimal(10),
+		prcs: new Decimal(0),
+			mr: new Decimal(1),
+		ps: new Decimal(1),
     }},
     color: "#4BDC13",
 				nodeStyle() {
@@ -48,6 +52,7 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
 		if (hasUpgrade("p", 54)) mult = mult.mul(upgradeEffect("p", 54))
 		if (hasUpgrade("p", 73)) mult = mult.mul(upgradeEffect("p", 73))
 		if (hasUpgrade("p", 81)) mult = mult.mul(upgradeEffect("p", 81))
+			if (hasUpgrade("p", 104)) mult = mult.mul(upgradeEffect("p", 104))
         return mult
     },
 	    effect() {
@@ -65,11 +70,43 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
         return eff;
     },
 		    effmp() {
-				if (hasUpgrade("p", 91))
-            return new Decimal(0);
+				if (!hasUpgrade("p", 91))
+            return new Decimal(1);
         let eff = Decimal.pow(1);
 		        if (player.p.buyables[21].gte(1))
 			eff = eff.times(buyableEffect("p", 21))
+				if (hasUpgrade("p", 122))
+			eff = eff.pow(upgradeEffect("p", 122))
+        return eff;
+    },
+			    effmr() {
+				if (!player.p.buyables[41].gte(1))
+            return new Decimal(0);
+        let eff = Decimal.pow(1);
+				if (hasUpgrade("p", 102))
+			eff = eff.times(player.p.pwr.div(3))
+        return eff;
+    },
+				    efpwr() {
+				if (!player.p.buyables[41].gte(1))
+            return new Decimal(3e7);
+        let eff = Decimal.pow(30);
+		if (hasUpgrade("p", 101))
+			eff = eff.times(player.p.prcs.div(300).max(10))
+			if (hasUpgrade("p", 103))
+			eff = eff.times(3)
+					if (hasUpgrade("p", 111))
+			eff = eff.times(2)
+		if (hasUpgrade("p", 112))
+			eff = eff.times(upgradeEffect("p", 112))
+		if (hasUpgrade("p", 113))
+			eff = eff.times(upgradeEffect("p", 113))
+		if (hasUpgrade("p", 114))
+			eff = eff.times(4)
+		if (player.p.pwr.gte(1e10))
+			eff = eff.div(300)
+		if (hasUpgrade("p", 121))
+			eff = eff.times(upgradeEffect("p", 121))
         return eff;
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -121,7 +158,7 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
         },
 		]
 				},
-		        "Dices": {
+		        "Dice": {
 								unlocked() {return (hasUpgrade("p", 23))},
 					            buttonStyle: { "border-color": "white" },
         content:[
@@ -179,6 +216,24 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
         },
 		]
 				},
+														        "Mega Robots": {
+								unlocked() {return (player.p.buyables[41].gte(1))},
+					            buttonStyle: { "border-color": "#9dc4d1" },
+        content:[
+		                    function() {if (player.tab == "p") return [ "column", 
+            [
+                ["display-text", 
+                   "You have <h2 style='color: lightblue; text-shadow: 0 0 10px lightblue'>" + format(player.p.mr) + "</h2> Mega Robots and <h2 style='color: yellow; text-shadow: 0 0 10px yellow'>" + format(player.p.pwr) + "</h2> Power"
+                ],
+								["bar", "bar"],
+											["upgrades", [10, 11,12]],
+            ]
+        ]
+				},
+            function() { if (hasUpgrade("p", 52)) return "blank"
+        },
+		]
+				},
 			},
 			upgrades: {
 				11: {
@@ -216,7 +271,7 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
 					description() {return "Unspent Void boosts Particles gain, and unlock a new row of Particle Upgrades <br> <br>Currently: " + format(upgradeEffect("p", 21)) + "x"},
 					cost: new Decimal(20),
 					effect() { if (upgradeEffect("p", 21).gte(100)) return player.p.sc
-					else return player.p.v.pow(0.4) },
+					else return player.p.v.pow(0.4).max(1) },
 										                currencyDisplayName: "Voids", // Use if using a nonstandard currency
                 currencyInternalName: "v", // Use if using a nonstandard currency
                 currencyLayer: "p",
@@ -567,12 +622,238 @@ effect() {return player.p.br},
 					cost: new Decimal(2e84),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
-									effect() {
-					let ret = Decimal.times(2, player.p.upgrades.length)
-					return ret;
-					},
 				},
-			},
+																				 92: {
+					title: "Tickspeed Boost II",
+					description() {return "Reqires: 10 Time Ascensions. <br> SOON"
+},
+					cost: new Decimal(7e127),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+				},
+																				 101: {
+					title: "Robot Upgrade",
+					description() {return "Gain more power based on Creating Percentage"
+},
+					cost: new Decimal(2.5),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 101)) return {
+						'background-color':'#77bf5f'
+					}
+					else return {
+						'background-color':'lightblue'
+					}
+				},
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() {return player.p.br},
+				},
+																								 102: {
+					title: "Reverse Upgrade",
+					description() {return "Gain percentage faster based on Power"
+},
+					cost: new Decimal(50),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 102)) return {
+						'background-color':'#77bf5f'
+					}
+					else return {
+						'background-color':'lightblue'
+					}
+				},
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() {if (hasUpgrade("p", 103)) return player.p.br.add(1.5)
+	else return player.p.ps},
+				},
+																												 103: {
+					title: "Boosty Package",
+					description() {return "Now creating time increased by 2.50x, but you will obtain even more power. <br> Currently: " + format(upgradeEffect("p", 102)) + "x"
+},
+					cost: new Decimal(300),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									effect() {
+					if (hasUpgrade("p", 103)) return player.points.div(player.points).add(2.5)
+				},
+									style() {
+										if (hasUpgrade("p", 103)) return {
+						'background-color':'#77bf5f'
+					}
+					else return {
+						'background-color':'lightblue'
+					}
+				},
+
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																																 104: {
+					title: "Boosty Package II",
+					description() {return "Boost Particles gain by Power amount. Currently: " + format(upgradeEffect("p", 104)) + "x"
+},
+					cost: new Decimal(10000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 104)) return {
+						'background-color':'#77bf5f'
+					}
+					else return {
+						'background-color':'lightblue'
+					}
+				},
+
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() { return player.p.pwr.pow(0.65)},
+				},
+					111: {
+					title: "Mega Booster I",
+					description() {return "Double Power Gain."
+},
+					cost: new Decimal(120000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 111)) return {
+						'background-color':'#77bf5f'
+					}
+					else return {
+						'background-color':'lightblue'
+					}
+				},
+
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() { return player.p.pwr.pow(0.65)},
+				},
+									112: {
+					title: "Mega Booster II",
+					description() {return "<b>Mega Generator</b> buyable level boost Power gain <br>Currently: " + format(upgradeEffect("p", 112))+ "x"
+},
+					cost: new Decimal(1600000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 112)) return {
+						'background-color':'#77bf5f'
+					}
+					else return {
+						'background-color':'lightblue'
+					}
+				},
+
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() { return player.p.buyables[21].pow(0.5)},
+				},
+													113: {
+					title: "Mega Booster III",
+					description() {return "<b>Mega Upgrader</b> buyable level boost Power gain <br>Currently: " + format(upgradeEffect("p", 113))+ "x"
+},
+					cost: new Decimal(22000000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 113)) return {
+						'background-color':'#77bf5f'
+					}
+					else return {
+						'background-color':'lightblue'
+					}
+				},
+
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() { return player.p.buyables[22].pow(0.5)},
+				},
+																	114: {
+					title: "Mega Booster IV",
+					description() {return "Double all Mega Boosters"
+},
+					cost: new Decimal(420000000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 114)) return {
+						'background-color':'#77bf5f'
+					}
+					else return {
+						'background-color':'lightblue'
+					}
+				},
+
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() { return player.p.buyables[22].pow(0.5)},
+				},
+						121: {
+					title: "MEGA-MEGA BOOST I",
+					description() {return "Just mega boost power gain by upgrades amount. Currently: " + format(upgradeEffect("p", 121)) + "x"
+},
+					cost: new Decimal(1.82e10),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 122)) return {
+						'background-color':'#77bf5f',
+						'height': '240px',
+						'width': '240px'
+					}
+					else return {
+						'background-color':'lightblue',
+										'height': '240px',
+						'width': '240px'
+					}
+				},
+
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() { let ret = Decimal.pow(1.25, player.p.upgrades.length)
+return ret},
+				},
+										122: {
+					title: "MEGA-MEGA BOOST II",
+					description() {return "Just mega boost Mega Points gain by upgrades amount Currently: " + format(upgradeEffect("p", 122)) + "x"
+},
+					cost: new Decimal(.82e23),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 121)) return {
+						'background-color':'#77bf5f',
+						'height': '240px',
+						'width': '240px'
+					}
+					else return {
+						'background-color':'lightblue',
+										'height': '240px',
+						'width': '240px'
+					}
+				},
+
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() { let ret = Decimal.pow(1.08, player.p.upgrades.length)
+return ret},
+				},
+				},
+				
 			buyables: {
 			    11: {
         cost(x) { return new Decimal(6e27).times(x.add(1).pow(x.add(5).times(5))) },
@@ -606,7 +887,7 @@ effect() {return player.p.br},
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
             player[this.layer].mp = player[this.layer].mp.sub(this.cost())
-            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(10))
         },
 														style() {
 															                let data = tmp[this.layer].buyables[this.id]
@@ -630,7 +911,7 @@ effect() {return player.p.br},
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
             player[this.layer].mp = player[this.layer].mp.sub(this.cost())
-            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(10))
         },
 														style() {
 															                let data = tmp[this.layer].buyables[this.id]
@@ -745,7 +1026,7 @@ effect() {return player.p.br},
 		purchaseLimit: 1,
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Mega Mega^2</b></h2> <br>" + "Requirement: " + format(data.cost) + " Mega Points <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + "/1 <br> Description: Start generating " + format(data.effect) + " Mega Robots/s"},
+				return "<h2><b>Mega Mega^2</b></h2> <br>" + "Requirement: " + format(data.cost) + " Mega Points <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + "/1 <br> Description: Obtain " + format(data.effect) + " Mega Robot"},
         canAfford() { return player[this.layer].mp.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
@@ -840,74 +1121,26 @@ player.p.att = player.p.rc.sub(15)
 		},
     },
 	bars: {
-    hp1: {
-        direction: LEFT,
+    bar: {
+        direction: RIGHT,
         width: 400,
         height: 20,
-        progress() { return Math.max(0, player.p.dmg.div(10)) },
+        progress() { if (hasUpgrade("p", 103)) return Math.max(0, player.p.prcs.div(10).div(player.p.pwr.div(30).max(1)).div(2.5))
+		else return Math.max(0, player.p.prcs.div(10).div(player.p.pwr.div(30).max(1))) },
 		 instant: true,
-		 unlocked() {
-			 if (player.p.sl <= 0) return false
-			 else return true
+		 unlocked() {return true
 		 },
 		 display() {
-                return `Lv.1 | Particle Slime ${format(player.p.sl)}/10 HP`
+			if (hasUpgrade("p", 103)) return "Creating power...    " + format(player.p.prcs.div(10).div(player.p.pwr.div(30).max(1)).times(100).div(2.5)) + "%"
+                else return "Creating power...    " + format(player.p.prcs.div(10).div(player.p.pwr.div(30).max(1)).times(100)) + "%"
             },
 		fillStyle() {
 			return {
-				'background-color': 'black'
-			}
-		},
-				baseStyle() {
-			return {
-				'background-color': 'red'
+				'background-color': 'lightblue',
+				'color': 'black'
 			}
 		},
     },
-	    PlayerHP: {
-        direction: LEFT,
-        width: 100,
-        height: 50,
-        progress() { return Math.max(0, player.p.att.div(15)) },
-		 instant: true,
-		 display() {
-                return `Your HP - ${format(player.p.ph)}/15 HP`
-            },
-		fillStyle() {
-			return {
-				'background-color': 'black',
-			}
-		},
-				baseStyle() {
-			return {
-				'background-color': 'green',
-				'border-radius': '0%'
-			}
-		},
-    },
-	    hp2: {
-        direction: LEFT,
-        width: 400,
-        height: 20,
-        progress() { return Math.max(0, player.p.dmg.div(10)) },
-		 instant: true,
-		 		 unlocked() {
-			 return (player.p.sl <= 0)
-		 },
-		 display() {
-                return `Lv.2 | Particle Goblin ${format(player.p.gb)}/30 HP`
-            },
-		fillStyle() {
-			return {
-				'background-color': 'black'
-			}
-		},
-				baseStyle() {
-			return {
-				'background-color': 'red'
-			}
-		},
-    }
 },
 infoboxes: {
 	    gain: {
@@ -951,14 +1184,26 @@ infoboxes: {
 return (player.points.gte(1)?1:0)
   },
     update(diff) {  
-if (player.p.buyables[21].gte(1)) player.p.mp = player.p.mp.add(tmp.p.effmp.times(diff));
+	
+ if (player.p.prcs.gte(player.p.req.times(player.p.pwr.div(30).max(1)).times(upgradeEffect("p", 102)))) {
+		player.p.mp = player.p.mp.add(tmp.p.effmp.times(diff))
+		player.p.prcs = player.p.prcs.div(1000)
+		player.p.pwr = player.p.pwr.add(tmp.p.efpwr.times(diff)).add(tmp.p.efpwr.times(diff))
+}
+	else if (player.p.mr.gte(1) && player.p.buyables[41].gte(1)) {
+		player.p.mp = player.p.mp.add(tmp.p.effmp.times(diff))
+		player.p.prcs = player.p.prcs.add(tmp.p.effmr.times(diff))
+	}
+if (player.p.buyables[21].gte(1)) return player.p.mp = player.p.mp.add(tmp.p.effmp.times(diff))
+
 
 			  if (player.p.at > 0) player.p.at = Math.max(0,player.p.at - diff)	
 					
 			if (player.p.sl <= 0) player.p.rc = player.p.rc
        
-   if (hasUpgrade("p", 14))
-          return player.p.v = player.p.v.add(tmp.p.effect.times(diff));
+	   if (hasUpgrade("p", 14))
+          return player.p.v = player.p.v.add(tmp.p.effect.times(diff))
+
 	},
     layerShown(){return true}
 })

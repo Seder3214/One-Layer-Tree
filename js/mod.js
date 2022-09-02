@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.32",
-	name: "One Layer Tree: Mega Tab!",
+	num: "0.43",
+	name: "One Layer Tree: Mega (Robots) Tab v2.00!",
 }
 
 let changelog = `<h1>Changelog:</h1><br> NO`

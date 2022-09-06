@@ -5,6 +5,7 @@ addLayer("p", {
     startData() { return {
         unlocked: true,
 		points: new Decimal(0),
+		mpoints: new Decimal(0),
 		sc: new Decimal(20),
 		v: new Decimal(0),
 		rc: new Decimal(0),
@@ -13,10 +14,13 @@ addLayer("p", {
 		gb: 30,
 		ph: 15,
 		att: new Decimal(0),
+		i: new Decimal(0),
+		t: new Decimal(0),
 		d: new Decimal(0),
 		mt: new Decimal(1),
 		mp: new Decimal(2),
 		br: new Decimal(1),
+		bh: new Decimal(1),
 		pwr: new Decimal(0),
 		req: new Decimal(10),
 		prcs: new Decimal(0),
@@ -51,8 +55,13 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
 		if (hasMilestone("p", 1)) mult = mult.times(1.4)	
 		if (hasUpgrade("p", 54)) mult = mult.mul(upgradeEffect("p", 54))
 		if (hasUpgrade("p", 73)) mult = mult.mul(upgradeEffect("p", 73))
-		if (hasUpgrade("p", 81)) mult = mult.mul(upgradeEffect("p", 81))
+		if (hasUpgrade("p", 81)) mult = mult.mul(upgradeEffect("p", 81).times(1e7))
 			if (hasUpgrade("p", 104)) mult = mult.mul(upgradeEffect("p", 104))
+			if (hasUpgrade("p", 93)) mult = mult.mul(25e10)
+			if (hasUpgrade("p", 94)) mult = mult.mul(25e40)
+			if (hasUpgrade("p", 131)) mult = mult.mul(upgradeEffect("p", 131))
+			if (hasUpgrade("p", 141)) mult = mult.div(mult.max(1))
+			if (hasUpgrade("p", 142)) mult = mult.mul(308)
         return mult
     },
 	    effect() {
@@ -67,6 +76,16 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
 			eff = eff.times(buyableEffect("p", 11).pow(upgradeEffect("p", 53)))
 		if (hasMilestone("p", 1))
 			eff = eff.times(1.4)
+        return eff;
+    },
+		    effte() {
+        if (!hasUpgrade("p", 171))
+            return new Decimal(0.1);
+        let eff = Decimal.add(0.1);
+				if (hasUpgrade("p", 171))
+			eff = eff.times(22)
+				if (hasUpgrade("p", 181))
+			eff = eff.times(10)
         return eff;
     },
 		    effmp() {
@@ -92,9 +111,11 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
             return new Decimal(3e7);
         let eff = Decimal.pow(30);
 		if (hasUpgrade("p", 101))
-			eff = eff.times(player.p.prcs.div(300).max(10))
+			eff = eff.times(player.p.prcs.div(2).min(100))
 			if (hasUpgrade("p", 103))
-			eff = eff.times(3)
+			eff = eff.times(15)
+							if (hasUpgrade("p", 92))
+			eff = eff.pow(1.6)
 					if (hasUpgrade("p", 111))
 			eff = eff.times(2)
 		if (hasUpgrade("p", 112))
@@ -227,6 +248,47 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
                 ],
 								["bar", "bar"],
 											["upgrades", [10, 11,12]],
+            ]
+        ]
+				},
+            function() { if (hasUpgrade("p", 52)) return "blank"
+        },
+		]
+				},
+																		        "Infinity": {
+								unlocked() {return (player.p.buyables[32].gte(1))},
+					            buttonStyle: { "border-color": "green" },
+        content:[
+		                    function() {if (player.tab == "p") return [ "column", 
+            [
+                ["display-text", 
+                   "You have <h2 style='color: green; text-shadow: 0 0 10px green'>" + format(player.p.i) + "</h2> Infinities and  <h2 style='color: green; text-shadow: 0 0 10px green'>" + format(player.p.mpoints) + "</h2> Essences"
+                ],
+											["clickables", [2,3,4,5,6,7,8,9]],
+											"blank",
+											["upgrades", [13,14,15,16]],
+																			"blank",
+											["milestone", [5]],
+											["milestone", [6]],
+											["milestone", [7]],
+											["milestone", [8]]
+            ]
+        ]
+				},
+            function() { if (hasUpgrade("p", 52)) return "blank"
+        },
+		]
+				},
+																						        "Infinity Tree": {
+								unlocked() {return (hasUpgrade("p", 162))},
+					            buttonStyle: { "border-color": "green" },
+        content:[
+		                    function() {if (player.tab == "p") return [ "column", 
+            [
+                ["display-text", 
+                   "You have <h2 style='color: green; text-shadow: 0 0 10px green'>" + format(player.p.t) + "</h2> Tree Essences"
+                ],
+["upgrades", [17,18,19,20,21,22,23,24,25]]
             ]
         ]
 				},
@@ -521,7 +583,7 @@ effect() {return player.p.br},
 						'background-color':'gray'
 					}
 				},
-				effect() {return player.p.br.times(upgradeEffect("p", 71).add(upgradeEffect("p", 72)).add(upgradeEffect("p", 74)).times(4))},
+				effect() {return player.p.br.times(upgradeEffect("p", 71).add(upgradeEffect("p", 72)).add(upgradeEffect("p", 74)).times(4).times(1e7))},
 				},
 												74: {
 					title: "Brick",
@@ -625,9 +687,25 @@ effect() {return player.p.br},
 				},
 																				 92: {
 					title: "Tickspeed Boost II",
-					description() {return "Reqires: 10 Time Ascensions. <br> SOON"
+					description() {return "Reqires: 10 Time Ascensions. <br> Raise Power gain by 25.00x"
 },
 					cost: new Decimal(7e127),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+				},
+																								 93: {
+					title: "Tickspeed Boost III",
+					description() {return "Reqires: 10 Time Ascensions. <br> Raise Particle gain by 2.5e11x"
+},
+					cost: new Decimal(1e222),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+				},
+																												 94: {
+					title: "Tickspeed Boost X",
+					description() {return "Reqires: 10 Time Ascensions. <br> Raise Particle gain by 2.5e41x"
+},
+					cost: new Decimal(2e249),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 				},
@@ -798,39 +876,12 @@ effect() { return player.p.buyables[22].pow(0.5)},
 														 currencyDisplayName: "Power", // Use if using a nonstandard currency
                 currencyInternalName: "pwr", // Use if using a nonstandard currency
                 currencyLayer: "p",
-effect() { return player.p.buyables[22].pow(0.5)},
 				},
 						121: {
 					title: "MEGA-MEGA BOOST I",
 					description() {return "Just mega boost power gain by upgrades amount. Currently: " + format(upgradeEffect("p", 121)) + "x"
 },
-					cost: new Decimal(1.82e10),
-					canAfford() {return (player.p.buyables[11].gte(8))},
-					unlocked() {return (hasUpgrade("p", 44))},
-									style() {
-										if (hasUpgrade("p", 122)) return {
-						'background-color':'#77bf5f',
-						'height': '240px',
-						'width': '240px'
-					}
-					else return {
-						'background-color':'lightblue',
-										'height': '240px',
-						'width': '240px'
-					}
-				},
-
-														 currencyDisplayName: "Power", // Use if using a nonstandard currency
-                currencyInternalName: "pwr", // Use if using a nonstandard currency
-                currencyLayer: "p",
-effect() { let ret = Decimal.pow(1.25, player.p.upgrades.length)
-return ret},
-				},
-										122: {
-					title: "MEGA-MEGA BOOST II",
-					description() {return "Just mega boost Mega Points gain by upgrades amount Currently: " + format(upgradeEffect("p", 122)) + "x"
-},
-					cost: new Decimal(.82e23),
+					cost: new Decimal(8.2e9),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 									style() {
@@ -849,8 +900,437 @@ return ret},
 														 currencyDisplayName: "Power", // Use if using a nonstandard currency
                 currencyInternalName: "pwr", // Use if using a nonstandard currency
                 currencyLayer: "p",
+effect() { let ret = Decimal.pow(2.63, player.p.upgrades.length)
+return ret},
+				},
+										122: {
+					title: "MEGA-MEGA BOOST II",
+					description() {return "Just mega boost Mega Points gain by upgrades amount Currently: " + format(upgradeEffect("p", 122)) + "x"
+},
+					cost: new Decimal(.46e23),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 122)) return {
+						'background-color':'#77bf5f',
+						'height': '240px',
+						'width': '240px'
+					}
+					else return {
+						'background-color':'lightblue',
+										'height': '240px',
+						'width': '240px'
+					}
+				},
+
+														 currencyDisplayName: "Power", // Use if using a nonstandard currency
+                currencyInternalName: "pwr", // Use if using a nonstandard currency
+                currencyLayer: "p",
 effect() { let ret = Decimal.pow(1.08, player.p.upgrades.length)
 return ret},
+				},
+														131: {
+					title: "Infinity Upgrade 11",
+					description() {return "Boost Particle gain by current playtime. <br> Currently: " + format(upgradeEffect("p", 131)) + "x"
+},
+					cost: new Decimal(1),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 131)) return {
+						'background-color':'#77bf5f',
+					}
+					else return {
+						'background-color':'green',
+					}
+				},
+
+														 currencyDisplayName: "Infinity", // Use if using a nonstandard currency
+                currencyInternalName: "i", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() { return player.points.pow(4)},
+				},
+																		132: {
+					title: "Infinity Upgrade 12",
+					description() {return "Set the main cost currency to essences but increase upgrades cost"
+},
+					cost: new Decimal(2),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 132)) return {
+						'background-color':'#77bf5f',
+					}
+					else return {
+						'background-color':'green',
+					}
+				},
+
+														 currencyDisplayName: "Infinity", // Use if using a nonstandard currency
+                currencyInternalName: "i", // Use if using a nonstandard currency
+                currencyLayer: "p",
+effect() { return player.points.pow(4)},
+				},
+																		141: {
+					title: "Infinity Upgrade 21",
+					description() {return "Decrease Particles gain but decrease essence requirement"
+},
+					cost: new Decimal(120),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 141)) return {
+						'background-color':'#77bf5f',
+					}
+					else return {
+						'background-color':'green',
+					}
+				},
+
+
+														 currencyDisplayName: "Essences", // Use if using a nonstandard currency
+                currencyInternalName: "mpoints", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																		142: {
+					title: "Infinity Upgrade 22",
+					description() {return "Wow! 308 Essences! Create a 308x boost to Particle gain!"
+},
+					cost: new Decimal(308),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 142)) return {
+						'background-color':'#77bf5f',
+					}
+					else return {
+						'background-color':'green',
+					}
+				},
+
+														 currencyDisplayName: "Essences", // Use if using a nonstandard currency
+                currencyInternalName: "mpoints", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																						151: {
+					title: "Infinity Upgrade 31",
+					description() {return "Wow! 1250 Essences! Create a 150x boost to essence gain"
+},
+					cost: new Decimal(1250),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 151)) return {
+						'background-color':'#77bf5f',
+					}
+					else return {
+						'background-color':'green',
+					}
+				},
+
+														 currencyDisplayName: "Essences", // Use if using a nonstandard currency
+                currencyInternalName: "mpoints", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																										152: {
+					title: "Infinity Upgrade 32",
+					description() {return "So much scaling... Boost essence gain by this upgrade cost!"
+},
+					cost: new Decimal(320000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 152)) return {
+						'background-color':'#77bf5f',
+					}
+					else return {
+						'background-color':'green',
+					}
+				},
+
+														 currencyDisplayName: "Essences", // Use if using a nonstandard currency
+                currencyInternalName: "mpoints", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																														161: {
+					title: "Infinity Upgrade 41",
+					description() {return "Does nothing? Unlock Milestones chamber!"
+},
+					cost: new Decimal(3e10),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 161)) return {
+						'background-color':'#77bf5f',
+					}
+					else return {
+						'background-color':'green',
+					}
+				},
+
+														 currencyDisplayName: "Essences", // Use if using a nonstandard currency
+                currencyInternalName: "mpoints", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																																		162: {
+					title: "Infinity Upgrade FINALE",
+					description() {return "Yeah, that's the end of this tab... But unlock another Infinity Tab! Let's go!"
+},
+					cost: new Decimal(1e308),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 162)) return {
+						'background-color':'#77bf5f',
+					}
+					else return {
+						'background-color':'green',
+					}
+				},
+
+														 currencyDisplayName: "Essences", // Use if using a nonstandard currency
+                currencyInternalName: "mpoints", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+						171: {
+					title: "11",
+					description() {return "Start generating tree essences"
+},
+					cost: new Decimal(1e308),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 44))},
+									style() {
+										if (hasUpgrade("p", 171)) return {
+						'background-color':'#77bf5f',
+					}
+					else return {
+						'background-color':'green',
+					}
+				},
+
+														 currencyDisplayName: "Essences", // Use if using a nonstandard currency
+                currencyInternalName: "mpoints", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+										181: {
+					title: "12",
+					description() {return "Generate <b>more</b> tree essences"
+},
+					cost: new Decimal(3),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 171))},
+					branches: [171],
+									style() {
+										if (hasUpgrade("p", 181)) return {
+						'background-color':'#77bf5f',
+						'margin-top': '70px',
+											'margin-right': '70px'
+					}
+					else return {
+						'background-color':'green',
+					'margin-top': '70px',
+					'margin-right': '70px'
+					}
+				},
+
+														 currencyDisplayName: "Tree Essences", // Use if using a nonstandard currency
+                currencyInternalName: "t", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+														182: {
+					title: "13",
+					description() {return "Generate much more tree essences"
+},
+					cost: new Decimal(38),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 171))},
+					branches: [171],
+									style() {
+										if (hasUpgrade("p", 182)) return {
+						'background-color':'#77bf5f',
+						'margin-top': '50px',
+											'margin-left': '70px'
+					}
+					else return {
+						'background-color':'green',
+					'margin-top': '50px',
+					'margin-left': '70px'
+					}
+				},
+
+														 currencyDisplayName: "Tree Essences", // Use if using a nonstandard currency
+                currencyInternalName: "t", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																		183: {
+					title: "14",
+					description() {return "Generate <b> much more</b> tree essences"
+},
+					cost: new Decimal(360),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 171))},
+					branches: [171],
+									style() {
+										if (hasUpgrade("p", 183)) return {
+						'background-color':'#77bf5f',
+						'margin-top': '50px',
+											'margin-left': '70px'
+					}
+					else return {
+						'background-color':'green',
+					'margin-top': '50px',
+					'margin-left': '70px'
+					}
+				},
+
+														 currencyDisplayName: "Tree Essences", // Use if using a nonstandard currency
+                currencyInternalName: "t", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																						191: {
+					title: "15",
+					description() {return "Generate more tree essences"
+},
+					cost: new Decimal(1220),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 182) && hasUpgrade("p", 183))},
+					branches: [182, 183],
+									style() {
+										if (hasUpgrade("p", 191)) return {
+						'background-color':'#77bf5f',
+						'margin-top': '70px',
+											'margin-left': '140px'
+					}
+					else return {
+						'background-color':'green',
+					'margin-top': '70px',
+					'margin-left': '140px'
+					}
+				},
+
+														 currencyDisplayName: "Tree Essences", // Use if using a nonstandard currency
+                currencyInternalName: "t", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+										201: {
+					title: "16",
+					description() {return "Generate more tree essences"
+},
+					cost: new Decimal(36000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 181)&& (hasUpgrade("p", 191)))},
+					branches: [181, 182],
+									style() {
+										if (hasUpgrade("p", 201)) return {
+						'background-color':'#77bf5f',
+								'margin-right': '210px'
+					}
+					else return {
+						'background-color':'green',
+						'margin-bottom': '40px',
+									'margin-right': '210px'
+					}
+				},
+
+														 currencyDisplayName: "Tree Essences", // Use if using a nonstandard currency
+                currencyInternalName: "t", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+														202: {
+					title: "17",
+					description() {return "Generate more tree essences"
+},
+					cost: new Decimal(125000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 201))},
+					branches: [201],
+									style() {
+										if (hasUpgrade("p", 202)) return {
+						'background-color':'#77bf5f',
+											'margin-top': '60px',
+								'margin-right': '60px'
+					}
+					else return {
+						'background-color':'green',
+						'margin-top': '60px',
+									'margin-right': '60px'
+					}
+				},
+
+														 currencyDisplayName: "Tree Essences", // Use if using a nonstandard currency
+                currencyInternalName: "t", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																		212: {
+					title: "18",
+					description() {return "Generate more tree essences"
+},
+					cost: new Decimal(1250000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 191))},
+					branches: [191],
+									style() {
+										if (hasUpgrade("p", 212)) return {
+						'background-color':'#77bf5f',
+			'margin-right': '60px'
+					}						
+					else return {
+						'background-color':'green',
+						'margin-right': '60px'
+					}
+				},
+
+														 currencyDisplayName: "Tree Essences", // Use if using a nonstandard currency
+                currencyInternalName: "t", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																						211: {
+					title: "20",
+					description() {return "Generate more tree essences"
+},
+					cost: new Decimal(2e11),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 201))},
+					branches: [201],
+									style() {
+										if (hasUpgrade("p", 211)) return {
+						'background-color':'#77bf5f',
+									'margin-right': '30px'
+					}
+					else return {
+						'background-color':'green',
+											'margin-right': '30px'
+					}
+				},
+
+														 currencyDisplayName: "Tree Essences", // Use if using a nonstandard currency
+                currencyInternalName: "t", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																						221: {
+					title: "19",
+					description() {return "Generate more tree essences"
+},
+					cost: new Decimal(120000000),
+					canAfford() {return (player.p.buyables[11].gte(8))},
+					unlocked() {return (hasUpgrade("p", 202) && hasUpgrade("p", 212))},
+					branches: [202, 212],
+									style() {
+										if (hasUpgrade("p", 221)) return {
+						'background-color':'#77bf5f',
+											'margin-top': '60px',
+								'margin-left': '60px'
+					}
+					else return {
+						'background-color':'green',
+						'margin-top': '60px',
+									'margin-left': '60px'
+					}
+				},
+
+														 currencyDisplayName: "Tree Essences", // Use if using a nonstandard currency
+                currencyInternalName: "t", // Use if using a nonstandard currency
+                currencyLayer: "p",
 				},
 				},
 				
@@ -979,7 +1459,7 @@ return ret},
 		purchaseLimit: 1,
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Mega Omega</b></h2> <br>" + "Requirement: " + format(data.cost) + " Mega Points <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + "/1 <br> Effect: ^" + format(data.effect) + " to ALL"},
+				return "<h2><b>Mega Omega</b></h2> <br>" + "Requirement: " + format(data.cost) + " Mega Points <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + "/1 <br>  Unlock <b>Infinities</b>"},
         canAfford() { return player[this.layer].mp.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
@@ -1019,7 +1499,9 @@ return ret},
 						'background-color': 'lightblue'
 					}
 			},
-		effect(x) {return x = x.max(1).times(2.75)},
+		effect(x) {if (player.p.buyables[43].gte(1)) return x = x.max(1).times(2.75).times(buyableEffect("p", 42)).pow(buyableEffect("p", 43).div(2))
+			else if (player.p.buyables[42].gte(1)) return x = x.max(1).times(2.75).times(buyableEffect("p", 42))
+			else return x = x.max(1).times(2.75)},
     },
 										    41: {
         cost(x) { return new Decimal(1e13).times(x.pow(500).max(1)).max(1e11) },
@@ -1049,7 +1531,7 @@ return ret},
 		purchaseLimit: 1,
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Mega Ultra</b></h2> <br>" + "Requirement: " + format(data.cost) + " Mega Points <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + "/1 <br> Description: Start generating " + format(data.effect) + " Mega Factories/s"},
+				return "<h2><b>Mega Ultra</b></h2> <br>" + "Requirement: " + format(data.cost) + " Mega Points <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + "/1 <br> Description: Get " + format(data.effect) + "x boost to Mega Mega"},
         canAfford() { return player[this.layer].mp.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
@@ -1058,14 +1540,37 @@ return ret},
         },
 														style() {
 															                let data = tmp[this.layer].buyables[this.id]
-				if (player.p.mp.lt(data.cost)) return {
+				if (player.p.mp.lt(data.cost) && player.p.buyables[42].lt(1)) return {
 						'background-color': '#bf8f8f'
 					}
 				else return {
 						'background-color': 'lightblue'
 					}
 			},
-		effect(x) {return x = x.max(1)},
+		effect(x) {return x = x.times(15)},
+    },
+												    43: {
+        cost(x) { return new Decimal(1e230).times(x.pow(50).max(1)).max(1e11) },
+		purchaseLimit: 1,
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>The last one</b></h2> <br>" + "Requirement: " + format(data.cost) + " Mega Points <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + "/1 <br> Description: Get ^" + format(data.effect.div(2)) + " boost to Mega Mega"},
+        canAfford() { return player[this.layer].mp.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player[this.layer].mp = player[this.layer].mp.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+														style() {
+															                let data = tmp[this.layer].buyables[this.id]
+				if (player.p.mp.lt(data.cost) && player.p.buyables[43].lt(1)) return {
+						'background-color': '#bf8f8f'
+					}
+				else return {
+						'background-color': 'lightblue'
+					}
+			},
+		effect(x) {return x = x.times(15)},
     },
 			},
 
@@ -1116,6 +1621,72 @@ player.p.att = player.p.rc.sub(15)
 					}
 					else return {
 						'background-color': 'red'
+					}
+				}
+		},
+						    21: {
+		title: "Obtain Infinity (1)",
+        display() {
+return "Requires: 1.78e308 Particles "},
+		canClick() { return (player.p.points.gte(1.78e308))},
+		unlocked() {return (!player.p.i.gte(1))},
+onClick() {
+return player.p.i = player.p.i.add(1)
+player.p.points = player.p.points.sub(player.p.points)		
+},
+								style() {
+																if (player.p.i.gte(1)) return {
+						'background-color': '#bf8f8f'
+					}
+					else return {
+						'background-color': 'green'
+					}
+				}
+		},
+								    22: {
+		title: "Obtain Infinity (2)",
+        display() {return "Requires: 1 Essence"},
+		canClick() { return (player.p.mpoints.gte(1))},
+		unlocked() {return (!player.p.i.gte(2))},
+onClick() {
+return player.p.i = player.p.i.add(1)
+player.p.points = player.p.points.sub(player.p.points)		
+},
+								style() {
+																if (player.p.i.gte(2)) return {
+						'background-color': '#bf8f8f'
+					}
+					else return {
+						'background-color': 'green'
+					}
+				}
+		},
+										    31: {
+		title: "<h3>Convert to Essence</h3>",
+        display() {if (hasUpgrade("p", 141)) return "Requires: 10 Particles "
+else return "Requires: 1e308 Particles "},
+		canClick() {if (hasUpgrade("p", 141)) return (player.p.points.gte(10))
+			else return (player.p.points.gte(1e308))},
+		unlocked() {return true},
+onClick() {
+	player.p.points = player.p.points.sub(player.p.points)
+if (hasMilestone("p", 5)) return player.p.mpoints = player.p.mpoints.add(2.0736e18).pow(2)
+if (hasMilestone("p", 5)) return player.p.mpoints = player.p.mpoints.add(2.0736e18)
+if (hasUpgrade("p", 152)) return player.p.mpoints = player.p.mpoints.add(1440000000)
+if (hasUpgrade("p", 151)) return player.p.mpoints = player.p.mpoints.add(4500)
+if (hasUpgrade("p", 141)) return player.p.mpoints = player.p.mpoints.add(30)
+else return player.p.mpoints = player.p.mpoints.add(1)
+		
+},
+								style() {
+					if (player.p.points.lte(10) && (hasUpgrade("p", 141))) return {
+						'background-color': '#bf8f8f'
+					}
+																else if (player.p.points.lte(1e308) && (!player.p.points.gte(10))) return {
+						'background-color': '#bf8f8f'
+					}
+					else return {
+						'background-color': 'green'
 					}
 				}
 		},
@@ -1179,13 +1750,28 @@ infoboxes: {
         effectDescription() {return "Check mod info for reward descriptions."},
         done() { return (player.points.gte(14410)) },
     },
+						    5: {
+        requirementDescription: "1e11 Essences!",
+        effectDescription() {return "Maybe again super boost? ^2 to essence gain!"},
+				unlocked() {return (hasUpgrade("p", 161))},
+        done() { return (player.p.mpoints.gte(1e11)) },
+    },
+							    6: {
+        requirementDescription: "1e20 Essences!",
+        effectDescription() {return "Maybe again super boost? ^2 to essence gain!"},
+				unlocked() {return (hasUpgrade("p", 161))},
+        done() { return (player.p.mpoints.gte(1e20)) },
+    },
 	},
 									passiveGeneration() {			
 return (player.points.gte(1)?1:0)
   },
     update(diff) {  
+ if (hasUpgrade("p", 171)) {
+player.p.t = player.p.t.add(tmp.p.effte.times(diff))
+}
 	
- if (player.p.prcs.gte(player.p.req.times(player.p.pwr.div(30).max(1)).times(upgradeEffect("p", 102)))) {
+ if (player.p.prcs.gte(player.p.req.times(player.p.pwr.div(30).max(1)).times(upgradeEffect("p", 102))) && player.p.buyables[41].gte(1)) {
 		player.p.mp = player.p.mp.add(tmp.p.effmp.times(diff))
 		player.p.prcs = player.p.prcs.div(1000)
 		player.p.pwr = player.p.pwr.add(tmp.p.efpwr.times(diff)).add(tmp.p.efpwr.times(diff))

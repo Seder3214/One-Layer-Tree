@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.44",
-	name: "One Layer Tree: Mega (Robots) Tab v2.05!",
+	num: "0.52",
+	name: "One Layer Tree: Infinities!!!",
 }
 
 let changelog = `<h1>Changelog:</h1><br> NO`
@@ -54,12 +54,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-"Current Endgame: 2 Time Ascensions"
+"Current Endgame: 1000 Tree Essences"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return (player.p.buyables[11].gte(2))
+	return (player.p.t.gte(1000))
 }
 
 

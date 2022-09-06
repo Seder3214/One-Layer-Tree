@@ -103,7 +103,7 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
             return new Decimal(0);
         let eff = Decimal.pow(1);
 				if (hasUpgrade("p", 102))
-			eff = eff.times(player.p.pwr.div(3))
+			eff = eff.times(player.p.pwr.div(3).max(3))
         return eff;
     },
 				    efpwr() {

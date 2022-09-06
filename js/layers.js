@@ -713,7 +713,7 @@ effect() {return player.p.br},
 					title: "Robot Upgrade",
 					description() {return "Gain more power based on Creating Percentage"
 },
-					cost: new Decimal(2.5),
+					cost: new Decimal(1.5),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 									style() {
@@ -733,7 +733,7 @@ effect() {return player.p.br},
 					title: "Reverse Upgrade",
 					description() {return "Gain percentage faster based on Power"
 },
-					cost: new Decimal(50),
+					cost: new Decimal(25),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 									style() {
@@ -754,7 +754,7 @@ effect() {if (hasUpgrade("p", 103)) return player.p.br.add(1.5)
 					title: "Boosty Package",
 					description() {return "Now creating time increased by 2.50x, but you will obtain even more power. <br> Currently: " + format(upgradeEffect("p", 102)) + "x"
 },
-					cost: new Decimal(300),
+					cost: new Decimal(150),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 									effect() {
@@ -777,7 +777,7 @@ effect() {if (hasUpgrade("p", 103)) return player.p.br.add(1.5)
 					title: "Boosty Package II",
 					description() {return "Boost Particles gain by Power amount. Currently: " + format(upgradeEffect("p", 104)) + "x"
 },
-					cost: new Decimal(10000),
+					cost: new Decimal(5000),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 									style() {
@@ -798,7 +798,7 @@ effect() { return player.p.pwr.pow(0.65)},
 					title: "Mega Booster I",
 					description() {return "Double Power Gain."
 },
-					cost: new Decimal(120000),
+					cost: new Decimal(60000),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 									style() {
@@ -819,7 +819,7 @@ effect() { return player.p.pwr.pow(0.65)},
 					title: "Mega Booster II",
 					description() {return "<b>Mega Generator</b> buyable level boost Power gain <br>Currently: " + format(upgradeEffect("p", 112))+ "x"
 },
-					cost: new Decimal(1600000),
+					cost: new Decimal(800000),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 									style() {
@@ -840,7 +840,7 @@ effect() { return player.p.buyables[21].pow(0.5)},
 					title: "Mega Booster III",
 					description() {return "<b>Mega Upgrader</b> buyable level boost Power gain <br>Currently: " + format(upgradeEffect("p", 113))+ "x"
 },
-					cost: new Decimal(22000000),
+					cost: new Decimal(11000000),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 									style() {
@@ -861,7 +861,7 @@ effect() { return player.p.buyables[22].pow(0.5)},
 					title: "Mega Booster IV",
 					description() {return "Double all Mega Boosters"
 },
-					cost: new Decimal(420000000),
+					cost: new Decimal(210000000),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 									style() {

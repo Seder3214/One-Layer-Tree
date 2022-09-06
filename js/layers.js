@@ -67,11 +67,11 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
 	    effect() {
         if (!hasUpgrade("p", 14))
             return new Decimal(0.5);
-        let eff = Decimal.pow(1);
+        let eff = Decimal.pow(0.5);
 		        if (hasUpgrade("p", 31))
-            eff = eff.times(2.5);
+            eff = eff.times(5);
         if (hasUpgrade("p", 22))
-            eff = eff.add(15);
+            eff = eff.add(7.5);
 		if (player.p.buyables[11].gte(1))
 			eff = eff.times(buyableEffect("p", 11).pow(upgradeEffect("p", 53)))
 		if (hasMilestone("p", 1))

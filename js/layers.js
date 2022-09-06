@@ -689,7 +689,7 @@ effect() {return player.p.br},
 					title: "Tickspeed Boost II",
 					description() {return "Reqires: 10 Time Ascensions. <br> Raise Power gain by 25.00x"
 },
-					cost: new Decimal(7e127),
+					cost: new Decimal(2e127),
 					canAfford() {return (player.p.buyables[11].gte(8))},
 					unlocked() {return (hasUpgrade("p", 44))},
 				},

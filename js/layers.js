@@ -20,6 +20,7 @@ addLayer("p", {
 		mt: new Decimal(1),
 		mp: new Decimal(2),
 		br: new Decimal(1),
+		st: new Decimal(2),
 		bh: new Decimal(1),
 		pwr: new Decimal(0),
 		req: new Decimal(10),
@@ -76,6 +77,24 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
 			eff = eff.times(buyableEffect("p", 11).pow(upgradeEffect("p", 53)))
 		if (hasMilestone("p", 1))
 			eff = eff.times(1.4)
+        return eff;
+    },
+		    effst() {
+        if (!player.p.buyables[51].gte(1))
+            return new Decimal(0.1);
+        let eff = Decimal.times(0.1);
+		        if (player.p.buyables[51].gte(1))
+            eff = eff.add(buyableEffect("p", 51));
+		        if (player.p.buyables[61].gte(1))
+            eff = eff.add(buyableEffect("p", 61));
+		        if (player.p.buyables[71].gte(1))
+            eff = eff.add(buyableEffect("p", 71));
+		        if (player.p.buyables[81].gte(1))
+            eff = eff.add(buyableEffect("p", 81));
+		        if (player.p.buyables[91].gte(1))
+            eff = eff.add(buyableEffect("p", 91));
+		        if (player.p.buyables[101].gte(1))
+            eff = eff.add(buyableEffect("p", 101));
         return eff;
     },
 		    effte() {
@@ -288,7 +307,32 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
                 ["display-text", 
                    "You have <h2 style='color: green; text-shadow: 0 0 10px green'>" + format(player.p.t) + "</h2> Tree Essences"
                 ],
-["upgrades", [17,18,19,20,21,22,23,24,25]]
+["upgrades", [17,18,19,20,21,22]]
+            ]
+        ]
+				},
+            function() { if (hasUpgrade("p", 52)) return "blank"
+        },
+		]
+				},
+																										        "Planetary event": {
+								unlocked() {return true},
+					            buttonStyle: { "border-color": "purple" },
+        content:[
+		                    function() {if (player.tab == "p") return [ "column", 
+            [
+                ["display-text", 
+                   "You have <h2 style='color: yellow; text-shadow: 0 0 10px yellow'>" + format(player.p.st) + "</h2> Stars"
+                ],
+["buyables", [5]],
+["upgrades", [23, 24, 25, 26, 27]],
+["buyables", [6]],
+["upgrades", [28,29,30,31,32]],
+["buyables", [7]],
+["upgrades", [33,34,35,36]],
+[ "row", [ ["buyable", [81]], "blank", "blank", ["buyable", [91]]]],
+["upgrades", [37,38,39,40,41,42,43]],
+["buyables", [10]]
             ]
         ]
 				},
@@ -1332,8 +1376,983 @@ effect() { return player.points.pow(4)},
                 currencyInternalName: "t", // Use if using a nonstandard currency
                 currencyLayer: "p",
 				},
+																										231: {
+					title: "Effecienty boost",
+					description() {return "Pluto 150% efficient"},
+					cost: new Decimal(20),
+					unlocked() {return true},	
+				currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+													style() {
+					if (hasUpgrade("p", 231)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '30px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '30px'
+					}
+									},
+				},	
+																						242: {
+					title: "Planetary Boost I",
+					description() {return "Pluto 50% efficient"
+},
+					cost: new Decimal(63),
+					unlocked() {return true},
+					branches: [231],
+													style() {
+					if (hasUpgrade("p", 242)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
 				},
-				
+																														241: {
+					title: "Pluto Temperature",
+					description() {return "Pluto 1000% efficient"
+},
+					cost: new Decimal(300),
+					unlocked() {return true},
+					branches: [231],
+													style() {
+					if (hasUpgrade("p", 241)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '30px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '30px'
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																										251: {
+					title: "Pluto Mass",
+					description() {return "Pluto 300% efficient"
+},
+					cost: new Decimal(125),
+					unlocked() {return true},
+					branches: [242],
+													style() {
+					if (hasUpgrade("p", 261)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '150px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '150px'
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																														261: {
+					title: "Planetary Boost II",
+					description() {return "Pluto 70% efficient"
+},
+					cost: new Decimal(1200),
+					unlocked() {return true},
+					branches: [241],
+													style() {
+					if (hasUpgrade("p", 261)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '155px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '155px'
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																														272: {
+					title: "Pluto Giant",
+					description() {return "Pluto 100% efficient"
+},
+					cost: new Decimal(8000),
+					unlocked() {return true},
+					branches: [242],
+													style() {
+					if (hasUpgrade("p", 272)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																														271: {
+					title: "Pluto Mastery",
+					description() {return "Pluto 100% efficient"
+},
+					cost: new Decimal(23000),
+					unlocked() {return true},
+					branches: [241],
+													style() {
+					if (hasUpgrade("p", 261)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																																		281: {
+					title: "Neptune Boost",
+					description() {return "Neptune 300% efficient"
+},
+					cost: new Decimal(245000),
+					unlocked() {return true},
+													style() {
+					if (hasUpgrade("p", 281)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+					291: {
+					title: "Meteor Bundle",
+					description() {return "Neptune 30% efficient"
+},
+					cost: new Decimal(420000),
+					unlocked() {return true},
+					branches: [281],
+													style() {
+					if (hasUpgrade("p", 291)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '20px'
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+					292: {
+					title: "Neptune Plasm",
+					description() {return "Neptune 50% efficient"
+},
+					cost: new Decimal(800000),
+					unlocked() {return true},
+					branches: [281],
+													style() {
+					if (hasUpgrade("p", 292)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+									293: {
+					title: "Neptune Core",
+					description() {return "Neptune 75% efficient"
+},
+					cost: new Decimal(2200000),
+					unlocked() {return true},
+					branches: [281],
+													style() {
+					if (hasUpgrade("p", 293)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-left': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+													301: {
+					title: "8th root",
+					description() {return "Neptune 75000% efficient"
+},
+					cost: new Decimal(12000000),
+					unlocked() {return true},
+					branches: [291, 292],
+													style() {
+					if (hasUpgrade("p", 293)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-left': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																	302: {
+					title: "Decreasing Power",
+					description() {return "Neptune 15000% less efficient, but Pluto 10000000% efficient"
+},
+					cost: new Decimal(1.8e10),
+					unlocked() {return true},
+					branches: [293],
+													style() {
+					if (hasUpgrade("p", 302)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-left': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																					311: {
+					title: "Neptune Self-Synergy",
+					description() {return "Neptune upgrades applies to Pluto x% efficiency"
+},
+					cost: new Decimal(5e12),
+					unlocked() {return true},
+					branches: [293],
+													style() {
+					if (hasUpgrade("p", 311)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-left': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																									321: {
+					title: "Neptune Mastery",
+					description() {return "Neptune 1e9% efficient"
+},
+					cost: new Decimal(8e13),
+					unlocked() {return true},
+					branches: [311],
+													style() {
+					if (hasUpgrade("p", 321)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-left': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																													331: {
+					title: "Uranus Boost I",
+					description() {return "Uranus 100% efficient"
+},
+					cost: new Decimal(1e15),
+					unlocked() {return true},
+					branches: [311],
+													style() {
+					if (hasUpgrade("p", 331)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-left': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+										341: {
+					title: "Uranus Boost II",
+					description() {return "Uranus 200% efficient"
+},
+					cost: new Decimal(7e15),
+					unlocked() {return true},
+					branches: [331],
+													style() {
+					if (hasUpgrade("p", 341)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-right': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+									342: {
+					title: "Uranus Power",
+					description() {return "Uranus 75% efficient"
+},
+					cost: new Decimal(4e16),
+					unlocked() {return true},
+					branches: [331],
+													style() {
+					if (hasUpgrade("p", 342)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',				
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+343: {
+					title: "7th root",
+					description() {return "Uranus 7500% efficient"
+},
+					cost: new Decimal(1e17),
+					unlocked() {return true},
+					branches: [331],
+													style() {
+					if (hasUpgrade("p", 343)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-left': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+				344: {
+					title: "Universe Boost I",
+					description() {return "Uranus 100% efficient"
+},
+					cost: new Decimal(2e19),
+					unlocked() {return true},
+					branches: [331],
+													style() {
+					if (hasUpgrade("p", 344)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-left': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+								351: {
+					title: "Universe Boost II",
+					description() {return "Uranus 200% efficient"
+},
+					cost: new Decimal(2e20),
+					unlocked() {return true},
+					branches: [341,342],
+													style() {
+					if (hasUpgrade("p", 351)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '50px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+                    'margin-right': '50px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+												352: {
+					title: "Uranus Temperature",
+					description() {return "Uranus 400% efficient"
+},
+					cost: new Decimal(6e20),
+					unlocked() {return true},
+					branches: [343,344],
+													style() {
+					if (hasUpgrade("p", 352)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',				
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																361: {
+					title: "Uranus Mastery",
+					description() {return "Uranus 4000% efficient"
+},
+					cost: new Decimal(6e21),
+					unlocked() {return true},
+					branches: [351,352],
+													style() {
+					if (hasUpgrade("p", 361)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',				
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																				371: {
+					title: "Start collecting rings. 1 Ring collected",
+					description() {return "Saturn 400% efficient"
+},
+					cost: new Decimal(4e23),
+					unlocked() {return true},
+													style() {
+					if (hasUpgrade("p", 371)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',				
+					}
+									},
+				 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																								381: {
+					title: "Continue collecting rings. 2 Rings collected",
+					description() {return "Saturn 100% efficient"
+},
+					cost: new Decimal(7e24),
+					unlocked() {return true},
+					branches: [371],
+													style() {
+					if (hasUpgrade("p", 381)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',				
+					}
+									},
+				 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+							382: {
+					title: "Collect rings. 3 Rings collected",
+					description() {return "Saturn 200% efficient"
+},
+					cost: new Decimal(2e25),
+					unlocked() {return true},
+					branches: [371],
+													style() {
+					if (hasUpgrade("p", 382)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px',
+					'margin-right': '300px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+'margin-left': '20px',
+'margin-right': '300px'				
+					}
+									},
+				 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+							391: {
+					title: "Get bored by collecting rings. 4 Rings collected",
+					description() {return "Saturn 100% efficient"
+},
+					cost: new Decimal(3e25),
+					unlocked() {return true},
+					branches: [381],
+													style() {
+					if (hasUpgrade("p", 391)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '300px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+'margin-right': '300px'					
+					}
+									},
+				 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+											401: {
+					title: "Get motivated of collecting all rings. 6 Rings collected",
+					description() {return "Saturn 1000% efficient"
+},
+					cost: new Decimal(3e26),
+					unlocked() {return true},
+					branches: [391],
+													style() {
+					if (hasUpgrade("p", 401)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '100px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+'margin-right': '100px'					
+					}
+									},
+				 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+															402: {
+					title: "Still collecting rings. 10 Rings collected",
+					description() {return "Saturn 100% efficient"
+},
+					cost: new Decimal(5e27),
+					unlocked() {return true},
+					branches: [391],
+													style() {
+					if (hasUpgrade("p", 402)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '300px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+'margin-right': '300px'					
+					}
+									},
+				 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+															411: {
+					title: "Get Very motivated to your task. 8 Rings collected",
+					description() {return "Saturn 200% efficient"
+},
+					cost: new Decimal(1e27),
+					unlocked() {return true},
+					branches: [391],
+													style() {
+					if (hasUpgrade("p", 411)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '300px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+'margin-right': '300px'					
+					}
+									},
+				 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																			421: {
+					title: "Finish Line!. 12 Rings collected",
+					description() {return "Saturn 200% efficient"
+},
+					cost: new Decimal(2e28),
+					unlocked() {return true},
+					branches: [391],
+													style() {
+					if (hasUpgrade("p", 421)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '300px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+'margin-right': '300px'					
+					}
+									},
+				 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																							431: {
+					title: "Task completed. 13 Rings collected",
+					description() {return "Saturn 20000% efficient"
+},
+					cost: new Decimal(6e28),
+					unlocked() {return true},
+					branches: [391],
+													style() {
+					if (hasUpgrade("p", 421)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '300px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+'margin-right': '300px'					
+					}
+									},
+				 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																								372: {
+					title: "Start terraforming Mars",
+					description() {return "Mars 100% efficient"
+},
+					cost: new Decimal(.5e44),
+					unlocked() {return true},
+													style() {
+					if (hasUpgrade("p", 372)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '40px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+'margin-left': '40px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+								384: {
+					title: "Create a rocket.",
+					description() {return "Mars 150% efficient"
+},
+					cost: new Decimal(1e44),
+					unlocked() {return true},
+					branches: [372],
+													style() {
+					if (hasUpgrade("p", 384)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+'margin-left': '20px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+												383: {
+					title: "Start terraforming mars. 3%.",
+					description() {return "Mars 200% efficient"
+},
+					branches: [372],
+					cost: new Decimal(2e44),
+					unlocked() {return true},
+													style() {
+					if (hasUpgrade("p", 383)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'					
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+																385: {
+					title: "Plant seeds. 7%.",
+					description() {return "Mars 1000% efficient. You'll be able to continue Mars content after Earth completion"
+},
+					branches: [384],
+					cost: new Decimal(4e44),
+					unlocked() {return true},
+													style() {
+					if (hasUpgrade("p", 385)) return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+						'margin-top': '90px',
+						'margin-left': '20px'
+
+										}
+					else return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+						'margin-top': '90px',
+						'margin-left': '20px'
+
+
+					}
+									},
+
+														 currencyDisplayName: "Stars", // Use if using a nonstandard currency
+                currencyInternalName: "st", // Use if using a nonstandard currency
+                currencyLayer: "p",
+				},
+			},				
 			buyables: {
 			    11: {
         cost(x) { return new Decimal(6e27).times(x.add(1).pow(x.add(5).times(5))) },
@@ -1572,6 +2591,213 @@ effect() { return player.points.pow(4)},
 			},
 		effect(x) {return x = x.times(15)},
     },
+							    51: {
+        cost(x) {if (player.p.buyables[51].gte(150)) return new Decimal(30000).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[51].gte(70)) return new Decimal(150).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[51].gte(10)) return new Decimal(15).times(x.max(1)).pow(0.9)
+			else return new Decimal(2).times(x.max(1)).pow(0.9) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>Pluto</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+        canAfford() { return player[this.layer].st.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player[this.layer].st = player[this.layer].st.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+														style() {
+															                let data = tmp[this.layer].buyables[this.id]
+				if (player.p.st.lt(data.cost)) return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+				else return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+			},
+		effect(x) {if (hasUpgrade("p", 311)) return x = x.times(0.1).times(512).times(10000000).times(11)
+			if (hasUpgrade("p", 302)) return x = x.times(0.1).times(512).times(10000000)
+			if (hasUpgrade("p", 271)) return x = x.times(0.1).times(256.32).times(2)
+			if (hasUpgrade("p", 271)) return x = x.times(0.1).times(32.04).times(8)
+			if (hasUpgrade("p", 261)) return x = x.times(0.1).times(132).times(1.7)
+			if (hasUpgrade("p", 251)) return x = x.times(0.1).times(44).times(3)
+			if (hasUpgrade("p", 241)) return x = x.times(0.1).times(4).times(11)
+			if (hasUpgrade("p", 242)) return x = x.times(0.1).times(2.5).times(1.5)
+			if (hasUpgrade("p", 231)) return x = x.times(0.1).times(2.5)
+			else return x = x.times(0.1)},
+    },
+								    71: {
+        cost(x) {if (player.p.buyables[71].gte(70)) return new Decimal(5e17).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[71].gte(10)) return new Decimal(5e15).times(x.max(1)).pow(0.9)
+			else return new Decimal(5e14).times(x.max(1)).pow(0.9) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>Uranus</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+        canAfford() { return player[this.layer].st.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player[this.layer].st = player[this.layer].st.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+														style() {
+															                let data = tmp[this.layer].buyables[this.id]
+				if (player.p.st.lt(data.cost)) return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+				else return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+			},
+		effect(x) {if (hasUpgrade("p", 361)) return x = x.times(1e13).times(450).times(52.5).times(40)
+			if (hasUpgrade("p", 352)) return x = x.times(1e13).times(450).times(10.5).times(5)
+			if (hasUpgrade("p", 351)) return x = x.times(1e13).times(450).times(3.5).times(3)
+			if (hasUpgrade("p", 344)) return x = x.times(1e13).times(450).times(1.75).times(2)
+			if (hasUpgrade("p", 343)) return x = x.times(1e13).times(450).times(1.75)
+			if (hasUpgrade("p", 342)) return x = x.times(1e13).times(6).times(1.75)
+			if (hasUpgrade("p", 341)) return x = x.times(1e13).times(6)
+			if (hasUpgrade("p", 331)) return x = x.times(1e13).times(2)
+		else return x = x.times(1e13)},
+    },
+										    61: {
+        cost(x) {if (player.p.buyables[61].gte(70)) return new Decimal(150000000).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[61].gte(10)) return new Decimal(1500000).times(x.max(1)).pow(0.9)
+			else return new Decimal(20000).times(x.max(1)).pow(0.9) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>Neptune</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+        canAfford() { return player[this.layer].st.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player[this.layer].st = player[this.layer].st.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+														style() {
+															                let data = tmp[this.layer].buyables[this.id]
+				if (player.p.st.lt(data.cost)) return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+				else return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+			},
+		effect(x) {if (hasUpgrade("p", 321)) return x = x.times(200).times(1e9)
+			if (hasUpgrade("p", 302)) return x = x.times(200).times(75000).div(15000)
+			if (hasUpgrade("p", 301)) return x = x.times(200).times(75000)
+			if (hasUpgrade("p", 293)) return x = x.times(200).times(7.8).times(1.75)
+			if (hasUpgrade("p", 292)) return x = x.times(200).times(5.2).times(1.5)
+			if (hasUpgrade("p", 291)) return x = x.times(200).times(4).times(1.3)
+			if (hasUpgrade("p", 281)) return x = x.times(200).times(4)
+			else return x = x.times(200)},
+    },
+									    81: {
+        cost(x) {if (player.p.buyables[81].gte(70)) return new Decimal(5e24).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[81].gte(10)) return new Decimal(5e23).times(x.max(1)).pow(0.9)
+			else return new Decimal(5e22).times(x.max(1)).pow(0.9) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>Saturn</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+        canAfford() { return player[this.layer].st.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player[this.layer].st = player[this.layer].st.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+														style() {
+															                let data = tmp[this.layer].buyables[this.id]
+				if (player.p.st.lt(data.cost)) return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+				else return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+			},
+		effect(x){if (hasUpgrade("p", 431)) return x = x.times(1e21).times(3e10)
+			if (hasUpgrade("p", 421)) return x = x.times(1e21).times(10800)
+			if (hasUpgrade("p", 402)) return x = x.times(1e21).times(3600)
+			if (hasUpgrade("p", 411)) return x = x.times(1e21).times(1800)
+			if (hasUpgrade("p", 401)) return x = x.times(1e21).times(600)
+			if (hasUpgrade("p", 391)) return x = x.times(1e21).times(60)
+		if (hasUpgrade("p", 382)) return x = x.times(1e21).times(30)
+		if (hasUpgrade("p", 381)) return x = x.times(1e21).times(10)
+			if (hasUpgrade("p", 371)) return x = x.times(1e21).times(5)
+		else return x = x.times(1e21)},
+    },
+										    91: {
+        cost(x) {if (player.p.buyables[91].gte(70)) return new Decimal(5e50).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[91].gte(10)) return new Decimal(5e40).times(x.max(1)).pow(0.9)
+			else return new Decimal(1e35).times(x.max(1)).pow(0.9) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>Mars</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+        canAfford() { return player[this.layer].st.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player[this.layer].st = player[this.layer].st.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+														style() {
+															                let data = tmp[this.layer].buyables[this.id]
+				if (player.p.st.lt(data.cost)) return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+				else return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+			},
+		effect(x){ if (hasUpgrade("p", 385)) return x = x.times(1e41).times(15000)
+		if (hasUpgrade("p", 383)) return x = x.times(1e41).times(15)
+		if (hasUpgrade("p", 384)) return x = x.times(1e41).times(5)
+		if (hasUpgrade("p", 372)) return x = x.times(1e41).times(2)
+		 else return x = x.times(1e41)},
+    },
+											    101: {
+        cost(x) {if (player.p.buyables[101].gte(70)) return new Decimal(5e70).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[101].gte(10)) return new Decimal(5e60).times(x.max(1)).pow(0.9)
+			else return new Decimal(1e47).times(x.max(1)).pow(0.9) },
+        display() {
+                let data = tmp[this.layer].buyables[this.id]
+				return "<h2><b>Earth</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+        canAfford() { return player[this.layer].st.gte(this.cost()) },
+        buy() {
+			                cost = tmp[this.layer].buyables[this.id].cost
+            player[this.layer].st = player[this.layer].st.sub(this.cost())
+            setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+        },
+														style() {
+															                let data = tmp[this.layer].buyables[this.id]
+				if (player.p.st.lt(data.cost)) return {
+						'border-color': 'gray',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+				else return {
+						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					}
+			},
+		effect(x){
+		  return x = x.times(1e61)},
+    },
 			},
 
 				clickables: {
@@ -1767,6 +2993,10 @@ infoboxes: {
 return (player.points.gte(1)?1:0)
   },
     update(diff) {  
+	 if (player.p.buyables[51].gte(1)) {
+player.p.st = player.p.st.add(tmp.p.effst.times(diff))
+}
+	
  if (hasUpgrade("p", 171)) {
 player.p.t = player.p.t.add(tmp.p.effte.times(diff))
 }

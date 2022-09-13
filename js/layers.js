@@ -1461,7 +1461,7 @@ effect() { return player.points.pow(4)},
 					unlocked() {return true},
 					branches: [242],
 													style() {
-					if (hasUpgrade("p", 261)) return {
+					if (hasUpgrade("p", 251)) return {
 						'border-color': 'lightgreen',
 						'background-color': '#181818',
 						'color': 'white',
@@ -1545,7 +1545,7 @@ effect() { return player.points.pow(4)},
 					unlocked() {return true},
 					branches: [241],
 													style() {
-					if (hasUpgrade("p", 261)) return {
+					if (hasUpgrade("p", 271)) return {
 						'border-color': 'lightgreen',
 						'background-color': '#181818',
 						'color': 'white',
@@ -1678,7 +1678,7 @@ effect() { return player.points.pow(4)},
 					unlocked() {return true},
 					branches: [291, 292],
 													style() {
-					if (hasUpgrade("p", 293)) return {
+					if (hasUpgrade("p", 301)) return {
 						'border-color': 'lightgreen',
 						'background-color': '#181818',
 						'color': 'white',
@@ -2221,7 +2221,7 @@ effect() { return player.points.pow(4)},
 					unlocked() {return true},
 					branches: [391],
 													style() {
-					if (hasUpgrade("p", 421)) return {
+					if (hasUpgrade("p", 431)) return {
 						'border-color': 'lightgreen',
 						'background-color': '#181818',
 						'color': 'white',

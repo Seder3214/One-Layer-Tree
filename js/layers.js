@@ -2775,7 +2775,7 @@ effect() { return player.points.pow(4)},
 			else return new Decimal(1e47).times(x.max(1)).pow(0.9) },
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Earth</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+				return "<h2><b>Jupiter</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
         canAfford() { return player[this.layer].st.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost

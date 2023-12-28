@@ -84,17 +84,17 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
             return new Decimal(0.1);
         let eff = Decimal.times(0.1);
 		        if (player.p.buyables[51].gte(1))
-            eff = eff.add(buyableEffect("p", 51));
+            eff = eff.add(buyableEffect("p", 51).eff);
 		        if (player.p.buyables[61].gte(1))
-            eff = eff.add(buyableEffect("p", 61));
+            eff = eff.add(buyableEffect("p", 61).eff);
 		        if (player.p.buyables[71].gte(1))
-            eff = eff.add(buyableEffect("p", 71));
+            eff = eff.add(buyableEffect("p", 71).eff);
 		        if (player.p.buyables[81].gte(1))
-            eff = eff.add(buyableEffect("p", 81));
+            eff = eff.add(buyableEffect("p", 81).eff);
 		        if (player.p.buyables[91].gte(1))
-            eff = eff.add(buyableEffect("p", 91));
+            eff = eff.add(buyableEffect("p", 91).eff);
 		        if (player.p.buyables[101].gte(1))
-            eff = eff.add(buyableEffect("p", 101));
+            eff = eff.add(buyableEffect("p", 101).eff);
         return eff;
     },
 		    effte() {
@@ -321,10 +321,11 @@ if (hasUpgrade("p", 53)) mult = mult.times(upgradeEffect("p", 53))
         content:[
 		                    function() {if (player.tab == "p") return [ "column", 
             [
-                ["display-text", 
+                ["row",[["display-text", 
                    "You have <h2 style='color: yellow; text-shadow: 0 0 10px yellow'>" + format(player.p.st) + "</h2> Stars"
-                ],
-["buyables", [5]],
+                ],"blank",["clickable",[41]]]],
+				
+["buyable", [51]],
 ["upgrades", [23, 24, 25, 26, 27]],
 ["buyables", [6]],
 ["upgrades", [28,29,30,31,32]],
@@ -1365,6 +1366,12 @@ effect() { return player.points.pow(4)},
 											'margin-top': '60px',
 								'margin-left': '60px'
 					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '60px'
+					}
 					else return {
 						'background-color':'green',
 						'margin-top': '60px',
@@ -1379,7 +1386,7 @@ effect() { return player.points.pow(4)},
 																										231: {
 					title: "Effecienty boost",
 					description() {return "Pluto 150% efficient"},
-					cost: new Decimal(20),
+					cost: new Decimal(200),
 					unlocked() {return true},	
 				currencyDisplayName: "Stars", // Use if using a nonstandard currency
                 currencyInternalName: "st", // Use if using a nonstandard currency
@@ -1387,6 +1394,12 @@ effect() { return player.points.pow(4)},
 													style() {
 					if (hasUpgrade("p", 231)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '30px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '30px'
@@ -1401,14 +1414,20 @@ effect() { return player.points.pow(4)},
 				},	
 																						242: {
 					title: "Planetary Boost I",
-					description() {return "Pluto 50% efficient"
+					description() {return "Pluto 200% efficient"
 },
-					cost: new Decimal(63),
+					cost: new Decimal(2500),
 					unlocked() {return true},
 					branches: [231],
 													style() {
 					if (hasUpgrade("p", 242)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px'
@@ -1429,12 +1448,19 @@ effect() { return player.points.pow(4)},
 					title: "Pluto Temperature",
 					description() {return "Pluto 1000% efficient"
 },
-					cost: new Decimal(300),
+					cost: new Decimal(10000),
 					unlocked() {return true},
 					branches: [231],
 													style() {
 					if (hasUpgrade("p", 241)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '30px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px',
@@ -1457,7 +1483,7 @@ effect() { return player.points.pow(4)},
 					title: "Pluto Mass",
 					description() {return "Pluto 300% efficient"
 },
-					cost: new Decimal(125),
+					cost: new Decimal(40500),
 					unlocked() {return true},
 					branches: [242],
 													style() {
@@ -1466,14 +1492,21 @@ effect() { return player.points.pow(4)},
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px',
-					'margin-left': '150px'
+					'margin-left': '350px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '350px'
 					}
 					else return {
 						'border-color': 'gray',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px',
-					'margin-left': '150px'
+					'margin-left': '350px'
 					}
 									},
 
@@ -1485,7 +1518,7 @@ effect() { return player.points.pow(4)},
 					title: "Planetary Boost II",
 					description() {return "Pluto 70% efficient"
 },
-					cost: new Decimal(1200),
+					cost: new Decimal(300000),
 					unlocked() {return true},
 					branches: [241],
 													style() {
@@ -1494,14 +1527,21 @@ effect() { return player.points.pow(4)},
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px',
-					'margin-right': '155px'
+					'margin-right': '300px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '300px'
 					}
 					else return {
 						'border-color': 'gray',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px',
-					'margin-right': '155px'
+					'margin-right': '300px'
 					}
 									},
 
@@ -1513,12 +1553,19 @@ effect() { return player.points.pow(4)},
 					title: "Pluto Giant",
 					description() {return "Pluto 100% efficient"
 },
-					cost: new Decimal(8000),
+					cost: new Decimal(575000),
 					unlocked() {return true},
-					branches: [242],
+					branches: [251],
 													style() {
 					if (hasUpgrade("p", 272)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px',
@@ -1541,12 +1588,18 @@ effect() { return player.points.pow(4)},
 					title: "Pluto Mastery",
 					description() {return "Pluto 100% efficient"
 },
-					cost: new Decimal(23000),
+					cost: new Decimal(1300000),
 					unlocked() {return true},
-					branches: [241],
+					branches: [261],
 													style() {
 					if (hasUpgrade("p", 271)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px'
@@ -1567,11 +1620,18 @@ effect() { return player.points.pow(4)},
 					title: "Neptune Boost",
 					description() {return "Neptune 300% efficient"
 },
-					cost: new Decimal(245000),
+					cost: new Decimal(45000000),
 					unlocked() {return true},
+					branches: [271,272],
 													style() {
 					if (hasUpgrade("p", 281)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px'
@@ -1590,14 +1650,21 @@ effect() { return player.points.pow(4)},
 				},
 					291: {
 					title: "Meteor Bundle",
-					description() {return "Neptune 30% efficient"
+					description() {return "Neptune 75% efficient"
 },
-					cost: new Decimal(420000),
+					cost: new Decimal(200000000),
 					unlocked() {return true},
 					branches: [281],
 													style() {
 					if (hasUpgrade("p", 291)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-right': '20px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px',
@@ -1620,12 +1687,18 @@ effect() { return player.points.pow(4)},
 					title: "Neptune Plasm",
 					description() {return "Neptune 50% efficient"
 },
-					cost: new Decimal(800000),
+					cost: new Decimal(450000000),
 					unlocked() {return true},
 					branches: [281],
 													style() {
 					if (hasUpgrade("p", 292)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px'
@@ -1644,9 +1717,9 @@ effect() { return player.points.pow(4)},
 				},
 									293: {
 					title: "Neptune Core",
-					description() {return "Neptune 75% efficient"
+					description() {return "Neptune 175% efficient"
 },
-					cost: new Decimal(2200000),
+					cost: new Decimal(1e9),
 					unlocked() {return true},
 					branches: [281],
 													style() {
@@ -1656,6 +1729,13 @@ effect() { return player.points.pow(4)},
 						'color': 'white',
 					'margin-top': '90px',
 					'margin-left': '20px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
+						'background-color': '#181818',
+						'color': 'white',
+						'margin-top': '90px',
+						'margin-left': '20px'
 					}
 					else return {
 						'border-color': 'gray',
@@ -1672,14 +1752,21 @@ effect() { return player.points.pow(4)},
 				},
 													301: {
 					title: "8th root",
-					description() {return "Neptune 75000% efficient"
+					description() {return "Neptune 750% efficient"
 },
-					cost: new Decimal(12000000),
+					cost: new Decimal(5e9),
 					unlocked() {return true},
 					branches: [291, 292],
 													style() {
 					if (hasUpgrade("p", 301)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px',
@@ -1700,9 +1787,9 @@ effect() { return player.points.pow(4)},
 				},
 																	302: {
 					title: "Decreasing Power",
-					description() {return "Neptune 15000% less efficient, but Pluto 10000000% efficient"
+					description() {return "Neptune 15000% less efficient, but Pluto 2000000% efficient"
 },
-					cost: new Decimal(1.8e10),
+					cost: new Decimal(8e10),
 					unlocked() {return true},
 					branches: [293],
 													style() {
@@ -1712,6 +1799,13 @@ effect() { return player.points.pow(4)},
 						'color': 'white',
 					'margin-top': '90px',
 					'margin-left': '20px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
+						'background-color': '#181818',
+						'color': 'white',
+						'margin-top': '90px',
+						'margin-left': '20px'
 					}
 					else return {
 						'border-color': 'gray',
@@ -1730,7 +1824,7 @@ effect() { return player.points.pow(4)},
 					title: "Neptune Self-Synergy",
 					description() {return "Neptune upgrades applies to Pluto x% efficiency"
 },
-					cost: new Decimal(5e12),
+					cost: new Decimal(1e12),
 					unlocked() {return true},
 					branches: [293],
 													style() {
@@ -1740,6 +1834,13 @@ effect() { return player.points.pow(4)},
 						'color': 'white',
 					'margin-top': '90px',
 					'margin-left': '20px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
+						'background-color': '#181818',
+						'color': 'white',
+						'margin-top': '90px',
+						'margin-left': '20px'
 					}
 					else return {
 						'border-color': 'gray',
@@ -1769,6 +1870,12 @@ effect() { return player.points.pow(4)},
 					'margin-top': '90px',
 					'margin-left': '20px'
 					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px'
+					}
 					else return {
 						'border-color': 'gray',
 						'background-color': '#181818',
@@ -1792,6 +1899,13 @@ effect() { return player.points.pow(4)},
 													style() {
 					if (hasUpgrade("p", 331)) return {
 						'border-color': 'lightgreen',
+						'background-color': '#181818',
+						'color': 'white',
+					'margin-top': '90px',
+					'margin-left': '20px'
+					}
+					if (player.p.st.gte(this.cost)) return {
+						'border-color': 'yellow',
 						'background-color': '#181818',
 						'color': 'white',
 					'margin-top': '90px',
@@ -2592,13 +2706,14 @@ effect() { return player.points.pow(4)},
 		effect(x) {return x = x.times(15)},
     },
 							    51: {
-        cost(x) {if (player.p.buyables[51].gte(150)) return new Decimal(30000).times(x.max(1)).pow(0.9)
-			if (player.p.buyables[51].gte(70)) return new Decimal(150).times(x.max(1)).pow(0.9)
-			if (player.p.buyables[51].gte(10)) return new Decimal(15).times(x.max(1)).pow(0.9)
+        cost(x) {if (player.p.buyables[51].gte(150)) return new Decimal(3000).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[51].gte(70)) return new Decimal(1500).times(x.add(player.p.buyables[51].sub(9)).max(1)).pow(0.9)
+			if (player.p.buyables[51].gte(30)) return new Decimal(300).times(x.add(player.p.buyables[51].sub(29)).max(1)).pow(0.9)
+			if (player.p.buyables[51].gte(10)) return new Decimal(5).times(x.add(player.p.buyables[51].sub(9)).max(1)).pow(1.25)
 			else return new Decimal(2).times(x.max(1)).pow(0.9) },
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Pluto</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+				return "<h2><b>Pluto</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Base Effect: +" + format(data.effect.base) + " stars/s<br>"+ " <br> Produces: +" + format(data.effect.eff) + " stars/s<br>"},
         canAfford() { return player[this.layer].st.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
@@ -2618,24 +2733,27 @@ effect() { return player.points.pow(4)},
 						'color': 'white',
 					}
 			},
-		effect(x) {if (hasUpgrade("p", 311)) return x = x.times(0.1).times(512).times(10000000).times(11)
-			if (hasUpgrade("p", 302)) return x = x.times(0.1).times(512).times(10000000)
-			if (hasUpgrade("p", 271)) return x = x.times(0.1).times(256.32).times(2)
-			if (hasUpgrade("p", 271)) return x = x.times(0.1).times(32.04).times(8)
-			if (hasUpgrade("p", 261)) return x = x.times(0.1).times(132).times(1.7)
-			if (hasUpgrade("p", 251)) return x = x.times(0.1).times(44).times(3)
-			if (hasUpgrade("p", 241)) return x = x.times(0.1).times(4).times(11)
-			if (hasUpgrade("p", 242)) return x = x.times(0.1).times(2.5).times(1.5)
-			if (hasUpgrade("p", 231)) return x = x.times(0.1).times(2.5)
-			else return x = x.times(0.1)},
+		effect(x) {
+			let base = new Decimal(0.369)
+			if (hasUpgrade("p", 311)) base = base.times(11)
+			if (hasUpgrade("p", 302)) base = base.times(200000)
+			if (hasUpgrade("p", 272)) base = base.times(2)
+			if (hasUpgrade("p", 271)) base = base.times(2)
+			if (hasUpgrade("p", 261)) base = base.times(1.7)
+			if (hasUpgrade("p", 251)) base = base.times(1.5)
+			if (hasUpgrade("p", 241)) base = base.times(11)
+			if (hasUpgrade("p", 242)) base = base.times(3)
+			if (hasUpgrade("p", 231)) base = base.times(2.5)
+			let eff = base.mul(x)
+			return {eff: eff, base: base}},
     },
 								    71: {
         cost(x) {if (player.p.buyables[71].gte(70)) return new Decimal(5e17).times(x.max(1)).pow(0.9)
-			if (player.p.buyables[71].gte(10)) return new Decimal(5e15).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[71].gte(10)) return new Decimal(5e15).times(x.add(player.p.buyables[71]).max(1)).pow(0.9)
 			else return new Decimal(5e14).times(x.max(1)).pow(0.9) },
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Uranus</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+				return "<h2><b>Uranus</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Base Effect: +" + format(data.effect.base) + " stars/s"+ " <br> Produces: +" + format(data.effect.eff) + " stars/s<br>"},
         canAfford() { return player[this.layer].st.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
@@ -2655,23 +2773,25 @@ effect() { return player.points.pow(4)},
 						'color': 'white',
 					}
 			},
-		effect(x) {if (hasUpgrade("p", 361)) return x = x.times(1e13).times(450).times(52.5).times(40)
-			if (hasUpgrade("p", 352)) return x = x.times(1e13).times(450).times(10.5).times(5)
-			if (hasUpgrade("p", 351)) return x = x.times(1e13).times(450).times(3.5).times(3)
-			if (hasUpgrade("p", 344)) return x = x.times(1e13).times(450).times(1.75).times(2)
-			if (hasUpgrade("p", 343)) return x = x.times(1e13).times(450).times(1.75)
-			if (hasUpgrade("p", 342)) return x = x.times(1e13).times(6).times(1.75)
-			if (hasUpgrade("p", 341)) return x = x.times(1e13).times(6)
-			if (hasUpgrade("p", 331)) return x = x.times(1e13).times(2)
-		else return x = x.times(1e13)},
+		effect(x) {			let base = new Decimal(1e13)
+			if (hasUpgrade("p", 361))  base = base.times(40)
+			if (hasUpgrade("p", 352))  base = base.times(5)
+			if (hasUpgrade("p", 351)) base = base.times(3)
+			if (hasUpgrade("p", 344)) base = base.times(2)
+			if (hasUpgrade("p", 343)) base = base.times(1.75)
+			if (hasUpgrade("p", 342)) base = base.times(1.75)
+			if (hasUpgrade("p", 341)) base = base.times(6)
+			if (hasUpgrade("p", 331)) base = base.times(2)
+			let eff = base.mul(x)
+			return {eff: eff, base: base}},
     },
 										    61: {
-        cost(x) {if (player.p.buyables[61].gte(70)) return new Decimal(150000000).times(x.max(1)).pow(0.9)
-			if (player.p.buyables[61].gte(10)) return new Decimal(1500000).times(x.max(1)).pow(0.9)
-			else return new Decimal(20000).times(x.max(1)).pow(0.9) },
+        cost(x) {if (player.p.buyables[61].gte(70)) return new Decimal(1500000000).times(x.max(1)).pow(0.9)
+			if (player.p.buyables[61].gte(10)) return new Decimal(25000000).times(x.max(1)).pow(0.9)
+			else return new Decimal(10000000).times(x.add(1)).pow(0.9) },
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Neptune</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+				return "<h2><b>Neptune</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Base Effect: +" + format(data.effect.base) + " stars/s"+ " <br> Produces: +" + format(data.effect.eff) + " stars/s<br>"},
         canAfford() { return player[this.layer].st.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
@@ -2691,14 +2811,16 @@ effect() { return player.points.pow(4)},
 						'color': 'white',
 					}
 			},
-		effect(x) {if (hasUpgrade("p", 321)) return x = x.times(200).times(1e9)
-			if (hasUpgrade("p", 302)) return x = x.times(200).times(75000).div(15000)
-			if (hasUpgrade("p", 301)) return x = x.times(200).times(75000)
-			if (hasUpgrade("p", 293)) return x = x.times(200).times(7.8).times(1.75)
-			if (hasUpgrade("p", 292)) return x = x.times(200).times(5.2).times(1.5)
-			if (hasUpgrade("p", 291)) return x = x.times(200).times(4).times(1.3)
-			if (hasUpgrade("p", 281)) return x = x.times(200).times(4)
-			else return x = x.times(200)},
+		effect(x) {			let base = new Decimal(25000)
+			if (hasUpgrade("p", 321))  base = base.times(1e9)
+			if (hasUpgrade("p", 302))  base = base.div(15000)
+			if (hasUpgrade("p", 301))  base = base.times(8.5)
+			if (hasUpgrade("p", 293))base = base.times(2.75)
+			if (hasUpgrade("p", 292))  base = base.times(1.5)
+			if (hasUpgrade("p", 291))  base = base.times(1.75)
+			if (hasUpgrade("p", 281))  base = base.times(4)
+			let eff = base.mul(x)
+			return {eff: eff, base: base}},
     },
 									    81: {
         cost(x) {if (player.p.buyables[81].gte(70)) return new Decimal(5e24).times(x.max(1)).pow(0.9)
@@ -2706,7 +2828,7 @@ effect() { return player.points.pow(4)},
 			else return new Decimal(5e22).times(x.max(1)).pow(0.9) },
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Saturn</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+				return "<h2><b>Saturn</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Base Effect: +" + format(data.effect.base) + " stars/s<br>"+ " <br> Produces: +" + format(data.effect.eff) + " stars/s<br>"},
         canAfford() { return player[this.layer].st.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
@@ -2743,7 +2865,7 @@ effect() { return player.points.pow(4)},
 			else return new Decimal(1e35).times(x.max(1)).pow(0.9) },
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Mars</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+				return "<h2><b>Mars</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Base Effect: +" + format(data.effect.base) + " stars/s<br>"+ " <br> Produces: +" + format(data.effect.eff) + " stars/s<br>"},
         canAfford() { return player[this.layer].st.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
@@ -2775,7 +2897,7 @@ effect() { return player.points.pow(4)},
 			else return new Decimal(1e47).times(x.max(1)).pow(0.9) },
         display() {
                 let data = tmp[this.layer].buyables[this.id]
-				return "<h2><b>Jupiter</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Produces: +" + format(data.effect) + " stars/s"},
+				return "<h2><b>Jupiter</b></h2> <br>" + "Requirement: " + format(data.cost) + " Stars <br>" + "Level: " + formatWhole(player[this.layer].buyables[this.id]) + " <br> Base Effect: +" + format(data.effect.base) + " stars/s<br>"+ " <br> Produces: +" + format(data.effect.eff) + " stars/s<br>"},
         canAfford() { return player[this.layer].st.gte(this.cost()) },
         buy() {
 			                cost = tmp[this.layer].buyables[this.id].cost
@@ -2916,7 +3038,30 @@ else return player.p.mpoints = player.p.mpoints.add(1)
 					}
 				}
 		},
-    },
+		41: {
+			title: "<h3>Star Fusioner</h3>",
+			display() {return "Click or hold to get Stars. You get " + format(tmp.p.effst.mul(0.5))+ " stars on click,<br> and "+ format(tmp.p.effst.mul(0.5).div(10))+" stars on hold (Every tick)."},
+			canClick() {return true},
+			unlocked() {return true},
+	onClick() {
+		return player.p.st = player.p.st.add(tmp.p.effst.mul(0.5))
+	},
+	onHold() {
+		return player.p.st = player.p.st.add(tmp.p.effst.mul(0.5).div(10))	
+	},
+									style() {
+						if (player.p.points.lte(10) && (hasUpgrade("p", 141))) return {
+							'background-color': '#bf8f8f'
+						}
+																	else if (player.p.points.lte(1e308) && (!player.p.points.gte(10))) return {
+							'background-color': '#bf8f8f'
+						}
+						else return {
+							'background-color': 'green'
+						}
+					},
+			},	
+	},
 	bars: {
     bar: {
         direction: RIGHT,
